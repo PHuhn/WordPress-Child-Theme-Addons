@@ -67,3 +67,9 @@ gc_get_season is a PHP (shortcode) function that returns the current year.
 The following is an example of the shortcode:
 
 `[gc_year]`
+
+## Instructions
+
+For more information see the Wiki:
+
+[Wiki](https://github.com/PHuhn/WordPress-Child-Theme-Addons/wiki/)
