@@ -32,10 +32,38 @@ The above will render as follows:
 
 gc-fade animation is a combination of Javascript and CSS.
 
+Each usage requires adding two CSS classes to the block:
+
+- gc-show-on-scroll gc-fade-in
+- gc-show-on-scroll gc-fade-up
+- gc-show-on-scroll gc-fade-down
+- gc-show-on-scroll gc-fade-right
+- gc-show-on-scroll gc-fade-left
+- gc-show-once-on-scroll gc-fade-in
+- gc-show-once-on-scroll gc-fade-up
+- gc-show-once-on-scroll gc-fade-down
+- gc-show-once-on-scroll gc-fade-right
+- gc-show-once-on-scroll gc-fade-left
+
 ## gc_counter animation
 
 gc_counter animation is combination of PHP (shortcode), Javascript and CSS.
 
+The following is an example of the shortcode:
+
+`[gc_counter id="cups-1" start="1000" end="2000" inc="50" interval="80"]`
+
+The arguments are as follows:
+- id    (not require) will assign a div id
+- start (defaults to 0) is the starting counter value
+- end   (defaults to 100) is the endding counter value
+- inc   (defaults to 5, not less than 1) is the increamental value of the counter
+- interval  (defaults to 100) is the number of milliseconds between increaments
+
 ## gc_year
 
 gc_get_season is a PHP (shortcode) function that returns the current year.
+
+The following is an example of the shortcode:
+
+`[gc_year]`

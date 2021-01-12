@@ -83,9 +83,9 @@ function gc_counter_shortcode( $atts ) {
 	 'interval' => 100
 	), $atts );
 	$id = '';
-        if( $a['id'] != '' ) {
-            $id = ' id="' . esc_attr( $a['id'] ) . '"';
-        }
+	if( $a['id'] != '' ) {
+		$id = ' id="' . esc_attr( $a['id'] ) . '"';
+	}
 	$attrib = ' data-start="' . esc_attr( $a['start'] ) . '" data-end="' . esc_attr( $a['end'] ) . '" data-inc="' . esc_attr( $a['inc'] ) . '" data-interval="' . esc_attr( $a['interval'] ) . '"';
 	$output = '<div class="gc-counter"' . $id . $attrib . '>' . esc_attr( $a['end'] ) . '</div>';
  return $output;
