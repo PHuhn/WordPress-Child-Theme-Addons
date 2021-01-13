@@ -47,7 +47,7 @@ Each usage requires adding two CSS classes to the block:
 
 ## gc_counter animation
 
-gc_counter animation is combination of PHP (shortcode), Javascript and CSS.
+gc_counter animation is a combination of PHP (shortcode), Javascript and CSS.
 
 The following is an example of the shortcode:
 
@@ -56,9 +56,9 @@ The following is an example of the shortcode:
 The arguments are as follows:
 - id    (not require) will assign a div id
 - start (defaults to 0) is the starting counter value
-- end   (defaults to 100) is the endding counter value
-- inc   (defaults to 5, not less than 1) is the increamental value of the counter
-- interval  (defaults to 100) is the number of milliseconds between increaments
+- end   (defaults to 100) is the ending counter value
+- inc   (defaults to 5, not less than 1) is the incremental value of the counter
+- interval  (defaults to 100) is the number of milliseconds between increments
 
 ## gc_year
 
