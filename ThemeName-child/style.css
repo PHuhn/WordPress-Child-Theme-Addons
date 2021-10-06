@@ -3,7 +3,7 @@
 Theme Name: Twenty Twenty Child
 Author: Phil Huhn
 Description: Twenty Twenty Child theme.
-Version: 1.0
+Version: 1.1.0
 Template: twentytwenty
 */
 /* GiveCamp (gc) animation */
@@ -45,10 +45,106 @@ Template: twentytwenty
 	transform: none;
 	opacity: 1;
 }
+/* = gc-heart-beat and gc-pulse =
+** https://jackharner.com/blog/pausing-css-animations-on-hover/
+*/
+@keyframes gc-heart-beat {
+	0% { transform: scale(1); }
+	50% { transform: scale(1.08); }
+	100% { transform: scale(1); }
+}
+/* Use gc-heart-beat in gc-pulse */
+.gc-pulse {
+	-moz-animation: gc-heart-beat 2s linear infinite;
+	-webkit-animation: gc-heart-beat 2s linear infinite;
+	animation: gc-heart-beat 2s linear infinite;
+}
+.gc-pulse:hover {
+	-webkit-animation-play-state: paused;
+	-moz-animation-play-state: paused;
+	animation-play-state: paused;
+}
 /* = counter = */
 .gc-counter {
 	text-align: center !important;
 	font-size: 2.4rem;
 	font-weight: 700;
+}
+/* = marquee/ticker =
+** https://www.sanwebcorner.com/2016/07/marquee-text-without-marquee-tag-using.html
+*/
+.gc-marquee {
+	min-height: 28px;
+	overflow: hidden;
+	position: relative;
+}
+.gc-marquee > .gc-scrollingtext {
+	white-space: nowrap;
+	position: absolute;
+}
+/*
+** = rectangle for a selectable item =
+*/
+.gc-row-list {
+	width: 100%;
+}
+.gc-center {
+	display: table;
+	margin: 0 auto;
+}
+.gc-box-item {
+	display: block; float:left;
+	width: 210px; /* 200 + 5 * 2 */
+	white-space: wrap;
+	-webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;
+	padding: 5px; margin: 10px;
+	position: relative; text-align: center;
+}
+.gc-box-item:hover { box-shadow: 0 0 40px #616161; }
+/* = circle with image inside of gc-box-item = */
+.gc-circle-tag {
+	display: block;
+	padding: 0; margin: 0;
+	width: 200px; height: 200px;
+	border: solid 2px;
+	border-radius: 100%;
+	background-image: url(no.png);
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+}
+.gc-circle-tag img {
+	margin: auto;
+	padding: calc(200px / 5.71);
+	max-width: 100%; max-height: 100%;
+}
+/* = rectangle image inside of gc-box-item = */
+.gc-rect-image {
+	position: relative; width: 200px; min-height: 300px;
+	-webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;
+	overflow: hidden;
+}
+.gc-rect-image img { margin: auto; width: 100%; max-height: 100%; }
+.gc-rect-content {
+	position: absolute; bottom: 15px; left: 0; right: 0;
+	-webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;
+	text-align: center; width: 90%; margin: 0 auto;
+	background-color: white;
+}
+.gc-box-item-last {
+	clear: both
+}
+.gc-box-item-row {
+	float: left;
+}
+/* = type writer = */
+.gc-word-writer, .gc-type-writer {
+	transition-property: opacity, transform;
+	opacity: 0;
+}
+.gc-word-writer.gc-is-visible,
+.gc-type-writer.gc-is-visible {
+	transition: all 1.0s ease-in-out;
+	transform: none;
+	opacity: 1;
 }
 /* ======================================================================== */

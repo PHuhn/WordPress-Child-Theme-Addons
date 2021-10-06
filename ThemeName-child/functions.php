@@ -54,7 +54,9 @@ function gc_get_season( ) {
 	//
 	return $season;
 }
-/* Register the above gc_get_season function for header */
+/*
+** Add the above gc_get_season function to the environment
+*/
 add_action( 'wp_head', 'gc_get_season' );
 /*
 ** ===========================================================================
@@ -63,14 +65,27 @@ add_action( 'wp_head', 'gc_get_season' );
 function gc_custom_scripts() {
 	wp_enqueue_script( 'gc-animation-js', get_stylesheet_directory_uri() . '/js/gc-animation.js', array( 'jquery' ), '', true );
 }
-/* Register the above custom animation scripts */
+/*
+** Register the above custom animation scripts
+*/
 add_action( 'wp_enqueue_scripts', 'gc_custom_scripts' );
 /*
 ** ===========================================================================
 ** Place additional shortcodes here.
-**
+*/
+/*
 ** ===========================================================================
 ** [gc_counter] returns the HTML code for a GC animated counter.
+** This counts from one number to another with a short interval between each
+** display of a number.
+** [gc_counter id="cups-1" start="1000" end="2000" inc="50" interval="80"]
+** Such that:
+** * id         An id for the outer tag (unique value on the page).
+** * start      Starting number, default 0.
+** * end        Ending number, default 100.
+** * inc        Increament number, default 5.
+** * interval   # of milliseconds to between each increament, default 100 or 1/10 th of a seconds.
+**
 ** @return string div HTML Code as follows:
 ** <div class="gc_counter gc-show-once-on-scroll" id="ct-1" data-start="0" data-end="100" data-inc="5" data-interval="75">100</div>
 */
@@ -90,8 +105,200 @@ function gc_counter_shortcode( $atts ) {
 	$output = '<div class="gc-counter"' . $id . $attrib . '>' . esc_attr( $a['end'] ) . '</div>';
  return $output;
 }
-/* Register the above function as [gc_counter] shortcode */
+/*
+** Register [gc_counter] that returns the HTML code for a GC animated counter.
+*/
 add_shortcode( 'gc_counter', 'gc_counter_shortcode' );
+/*
+** ===========================================================================
+** [gc_marquee] returns the HTML code for a GC animated marquee/ticker.
+** [gc_marquee id="marq-1" text="Short marquee text!" milli-sec="16000" height="75" bg-color="black" text-color="#dddddd" text-tag="h3" margin="15" weight="bold"]
+** Such that:
+** * id         An id for the outer tag (unique value on the page).
+** * text       Text for the marquee.
+** * milli-sec  # of milliseconds to finish one full pass, default 20000 or 20 seconds.
+** * height     style height applied to outer tag, default 28px.
+** * bg-color   style background color applied to outer tag (system default).
+** * text-color style font color applied to outer tag (system default).
+** * text-tag   HTML inner tag value, default is p.
+** * margin     style applied to inner tag, if 5 then would look like 'margin 5px auto;'.
+** * weight     font-weight style applied to inner tag, default is none.
+**
+** @return string div HTML Code as follows:
+** <div class="gc_marquee gc-show-once-on-scroll" id="ct-1" data-start="0" data-end="100" data-inc="5" data-interval="75">100</div>
+*/
+function gc_marquee_shortcode( $atts ) {
+	$a = shortcode_atts( array(
+	 'id' => '',
+	 'text' => '',
+	 'milli-sec' => 20000,
+	 'height' => '',
+	 'bg-color' => '',
+	 'text-color' => '',
+	 'text-tag' => 'p',
+	 'margin' => '',
+	 'weight' => ''
+	), $atts );
+	if( $a['text'] == '' ) {
+		return '';
+	}
+	// Create ouptut snippets from the parameters.
+	$id = '';
+	if( $a['id'] != '' ) {
+		$id = ' id="' . esc_attr( $a['id'] ) . '"';
+	}
+	$text = esc_attr( $a['text'] );
+	$milli_sec = " data-millisec='" . esc_attr( $a['milli-sec'] ) . "'";
+	// outer tag
+	$height = '';
+	if( $a['height'] != '' ) {
+		$height = "height: " . esc_attr( $a['height'] ) . "px;";
+	}
+	$bg_color = '';
+	if( $a['bg-color'] != '' ) {
+		$bg_color = "background-color: " . esc_attr( $a['bg-color'] ) . ";";
+	}
+	$text_color = '';
+	if( $a['text-color'] != '' ) {
+		$text_color = "color: " . esc_attr( $a['text-color'] ) . ";";
+	}
+	$outer_style = '';
+	if( $height != '' or $bg_color != '' or $text_color != '' ) {
+		$outer_style = " style='" . $height . $bg_color . $text_color . "'";
+	}
+	// inner tag
+	$text_tag = esc_attr( $a['text-tag'] );
+	$margin = '';
+	if( $a['margin'] != '' ) {
+		$margin = "margin: " . esc_attr( $a['margin'] ) . "px auto;";
+	}
+	$weight = '';
+	if( $a['weight'] != '' ) {
+		$weight = "font-weight: " . esc_attr( $a['weight'] ) . ";";
+	}
+	$inner_style = '';
+	if( $margin != '' or $weight != '' ) {
+		$inner_style = " style='" . $margin . $weight . "'";
+	}
+	//
+	$output = "<div class='gc-marquee'" . $id . $outer_style . ">\n";
+	$output .= "	<" . $text_tag . " class='gc-scrollingtext'" . $milli_sec . $inner_style . ">" . $text . "</" . $text_tag . ">\n</div>";
+ return $output;
+}
+/*
+** Register [gc_marquee] that returns the HTML code for a GC animated marquee.
+*/
+add_shortcode( 'gc_marquee', 'gc_marquee_shortcode' );
+/*
+** ===========================================================================
+** [gc_box_posts]
+** * format		   rectangle or circle, the default is rectangle
+** * post_type     a custom post type, default to none.
+** * category_slug a post category slug or comma seperated slugs,
+**                 if blank the latest posts
+** * tag_slug      a post tag slug or comma seperated slugs,
+**                 if blank then see category_slug
+** * posts_per_row the number of posts displayed in a row,
+**                 the default is 5
+** * showposts     the number of posts to displayed,
+**                 the default is 5
+** Examples:
+** [gc_box_posts format='rectangle' category_slug='meetings' tag_slug='2020' posts_per_row=3 showposts=6]
+** [gc_box_posts format='circle' category_slug='hnv-blogs' showposts=5]
+*/
+function gc_boxposts_function( $atts ){
+	extract( shortcode_atts( array(
+		'format' => 'rectangle',
+		'post_type' => '',
+		'category_slug' => '',
+		'tag_slug' => '',
+		'posts_per_row' => 5,
+		'show_posts' => 5
+	), $atts ) );
+	$post_output = '<div class="gc-row-list"><div class="gc-center">';
+	wp_reset_query();
+	$n = 0;
+	$args = array( 'posts_per_page'=>$show_posts );
+	if( $post_type != '' ) {
+		// custom post_type=team
+		$args = array_merge( $args, array( 'post_type' => $post_type ) );
+	}
+	if( $category_slug != '' ) {
+		// cat=2, category_name=recovery
+		$args = array_merge( $args, array( 'category_name' => $category_slug ) );
+	}
+	if( $tag_slug != '' ) {
+		// tag_id=2, 'tag' => 'bread,baking'
+		$args = array_merge( $args, array( 'tag_name' => $tag_slug ) );
+	}
+	$events = new WP_Query( $args );
+	$num_posts = $events->post_count; 
+	if ( $events->have_posts( ) ) :
+		while( $events->have_posts( ) ) : $events->the_post( );
+			// setup data to be displayed
+			// count the # of posts
+			$n++;
+			// after each item place endItemDiv div
+			if( $n % $posts_per_row == 0 ) {
+				$endItemDiv = '<div class="gc-box-item-last"></div>';
+				if( $n != $num_posts ) {
+					$endItemDiv .= '</div><div class="gc-center">';
+				}
+			} else {
+				$endItemDiv = '<div class="gc-box-item-row"></div>';
+			}
+			// get post url, title and image
+			$postUrl = get_the_permalink();
+			$title = gc_word_trim( get_the_title(), 38 );
+			if( has_post_thumbnail()) {
+				$med_imgSrc = wp_get_attachment_image_src( get_post_thumbnail_id(), 'medium');
+				$imgUrl = $med_imgSrc[0];
+			} else {
+				$imgUrl = get_template_directory_uri().'/images/not_found.png';
+			}
+			// output the HTML
+			if( $format == 'circle' ) {
+				$post_output .= '<div class="gc-box-item">
+					<a href="'.$postUrl.'">
+						<div class="gc-circle-tag"><img src="'.$imgUrl.'" alt="" /></div>
+						<p>'.$title.'</p>
+					</a>
+				</div>
+				'.$endItemDiv;
+			} else {
+				$post_output .= '<div class="gc-box-item">
+					<a href="'.$postUrl.'">
+						<div class="gc-rect-image"><img src="'.$imgUrl.'" alt="" /></div>
+						<div class="gc-rect-content"><p>'.$title.'</p></div>
+					</a>
+				</div>
+				'.$endItemDiv;
+			}
+ 		endwhile;
+	endif;
+	// Cleanup
+	$post_output .= '<div class="gc-box-item-last"></div></div></div>';
+	wp_reset_query();
+	return $post_output;
+}
+add_shortcode( 'gc_box_posts', 'gc_boxposts_function' );
+/*
+** Truncate the string on the last word before max_len.
+*/
+function gc_word_trim( $str, $max_len )
+{
+	if( strlen( $str ) > $max_len ) {
+		// 4 is ' ...' characters
+		$elipse = ' ...';
+		$pos = strrpos( substr( $str, 0, $max_len - 3 ), ' ' );
+		if( $pos == false ) {
+			return( substr( $str, 0, $max_len - 4 ) . $elipse );
+		} else {
+			return substr( $str, 0, $pos ) . $elipse;
+		}
+	}
+	return $str;
+}
 /*
 ** ===========================================================================
 ** [gc_year] returns text of the current year.
