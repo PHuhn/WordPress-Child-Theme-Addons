@@ -7,6 +7,7 @@ The addons are as follows:
 - gc-fade animation (js and CSS)
 - gc_counter animation (shortcode, js and CSS)
 - gc_marquee animation (shortcode, js and CSS)
+- gc_type_writer animation (shortcode, js and CSS)
 - gc_box_posts (shortcode and CSS)
 - gc_year (shortcode)
 
@@ -74,7 +75,7 @@ The following is an example of the shortcode:
 `[gc_marquee id="marq-1" text="Short marquee text!" milli-sec="16000" height="75" bg-color="black" text-color="#dddddd" text-tag="h3" margin="15" weight="bold"]`
 
 The arguments are as follows:
-- id:         (not require) will assign a div id for the outer tag (id value must be unique on the page).
+- id:         (not require) assigns an id for the outer tag (id value must be unique on the page).
 - text:       (required) text for the marquee.
 - milli-sec:  (defaults to 20000 or 20 seconds) # of milliseconds to finish one full pass
 - height:     (defaults to 28px) style height applied to outer tag.
@@ -83,6 +84,28 @@ The arguments are as follows:
 - text-tag:   (defaults to p) HTML inner tag value (no &gt; and &lt;).
 - margin:     (defaults to none) style applied to inner tag, if 5 then would look like 'margin 5px auto;'.
 - weight:     (defaults to none) font-weight style applied to inner tag.
+
+## gc_type_writer animation
+
+gc_type_writer animation is a combination of PHP (shortcode), Javascript and CSS. gc_type_writer displays text a letter or word at a time.
+
+The following are examples of the shortcode:
+
+`[gc_type_writer id="tw-1" text="Short type writer text!" type="letter" milli-sec="60" bg-color="black" text-color="#dddddd" text-tag="h3" weight="bold"]`
+
+or:
+
+`[gc_type_writer id="tw-2" text="Short type writer text!" type="word" milli-sec="450" bg-color="darkgray" text-color="red" text-tag="p" weight="bold"]`
+
+The arguments are as follows:
+- id:         (not require) assigns an id for the tag (id value must be unique on the page),
+- text:       (required) text for the type writer,
+- type:       (default is letter) options of letter/word,
+- milli-sec:  (default 50 or 1/20 seconds) # of milliseconds between typing,
+- bg-color:   (system default) background color applied to the tag,
+- text-color: (system default) font color applied to the tag,
+- text-tag:   (default is p) HTML tag value,
+- weight:     (defaults to none) font-weight style applied to the tag.
 
 ## gc_box_posts
 
@@ -96,8 +119,11 @@ Posts can be selected in any combination of three way:
 - tag:       a post tag.
 
 The following is an example of the shortcode:
+
 `[gc_box_posts format='rectangle' category_slug='meetings' tag_slug='2020' posts_per_row=3 showposts=6]`
+
 or
+
 `[gc_box_posts format='circle' category_slug='hnv-blogs' showposts=5]`
 
 The arguments are as follows:

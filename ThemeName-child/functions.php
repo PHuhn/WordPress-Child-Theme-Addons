@@ -148,6 +148,7 @@ function gc_marquee_shortcode( $atts ) {
 		$id = ' id="' . esc_attr( $a['id'] ) . '"';
 	}
 	$text = esc_attr( $a['text'] );
+	$aria = " aria-label='" . $text . "'";
 	$milli_sec = " data-millisec='" . esc_attr( $a['milli-sec'] ) . "'";
 	// outer tag
 	$height = '';
@@ -181,14 +182,81 @@ function gc_marquee_shortcode( $atts ) {
 		$inner_style = " style='" . $margin . $weight . "'";
 	}
 	//
-	$output = "<div class='gc-marquee'" . $id . $outer_style . ">\n";
-	$output .= "	<" . $text_tag . " class='gc-scrollingtext'" . $milli_sec . $inner_style . ">" . $text . "</" . $text_tag . ">\n</div>";
+	$output = "<div class='gc-marquee' role='marquee'" . $id . $aria . $outer_style . ">\n";
+	$output .= "	<" . $text_tag . " class='gc-scrollingtext' aria-hidden='true'" . $milli_sec . $inner_style . ">" . $text . "</" . $text_tag . ">\n</div>";
  return $output;
 }
 /*
 ** Register [gc_marquee] that returns the HTML code for a GC animated marquee.
 */
 add_shortcode( 'gc_marquee', 'gc_marquee_shortcode' );
+/*
+** ===========================================================================
+** [gc_type_writer] returns the HTML code for a GC type writer.
+** [gc_type_writer id="tw-1" text="Short marquee text!" type="letter" milli-sec="100" bg-color="black" text-color="#dddddd" text-tag="h3" weight="bold"]
+** Such that:
+** * id         An id for the tag (id value must be unique on the page).
+** * text       Text for the type writer.
+** * type	    Options of letter/word, (defeault is letter)
+** * milli-sec  # of milliseconds between typing, default 50 or 1/20 seconds.
+** * bg-color   style background color applied to the tag (system default).
+** * text-color style font color applied to the tag (system default).
+** * text-tag   HTML tag value, default is p.
+** * weight     font-weight style applied to inner tag, default is none.
+**
+** @return string of HTML Code as follows:
+** <h3 class="gc-show-once-on-scroll gc-word-writer" id="tw-1" data-millisec="200" style="background-color: black;color: #dddddd;font-weight: bold;">Short marquee text!</h3>
+*/
+function gc_type_writer_shortcode( $atts ) {
+	$a = shortcode_atts( array(
+	 'id' => '',
+	 'text' => '',
+	 'type' => 'letter',
+	 'milli-sec' => 50,
+	 'bg-color' => '',
+	 'text-color' => '',
+	 'text-tag' => 'p',
+	 'weight' => ''
+	), $atts );
+	if( $a['text'] == '' ) {
+		return '';
+	}
+	// Create ouptut snippets from the parameters.
+	$id = '';
+	if( $a['id'] != '' ) {
+		$id = ' id="' . esc_attr( $a['id'] ) . '"';
+	}
+	$text = esc_attr( $a['text'] );
+	$class =' class="gc-show-once-on-scroll gc-type-writer"';
+	if( $a['type'] == 'word' ) {
+		$class = ' class="gc-show-once-on-scroll gc-word-writer"';
+	}
+	$milli_sec = " data-millisec='" . esc_attr( $a['milli-sec'] ) . "'";
+	$bg_color = '';
+	if( $a['bg-color'] != '' ) {
+		$bg_color = "background-color: " . esc_attr( $a['bg-color'] ) . ";";
+	}
+	$text_color = '';
+	if( $a['text-color'] != '' ) {
+		$text_color = "color: " . esc_attr( $a['text-color'] ) . ";";
+	}
+	$text_tag = esc_attr( $a['text-tag'] );
+	$weight = '';
+	if( $a['weight'] != '' ) {
+		$weight = "font-weight: " . esc_attr( $a['weight'] ) . ";";
+	}
+	$style = '';
+	if( $bg_color != '' or $text_color != '' or $weight != '' ) {
+		$style = " style='" . $height . $bg_color . $text_color .  $weight . "'";
+	}
+	//
+	$output = "<" . $text_tag . $id . $class . $milli_sec . $style . ">" . $text . "</" . $text_tag . ">";
+ return $output;
+}
+/*
+** Register [gc_type_writer] that returns the HTML code for a GC type writer.
+*/
+add_shortcode( 'gc_type_writer', 'gc_type_writer_shortcode' );
 /*
 ** ===========================================================================
 ** [gc_box_posts]
@@ -215,7 +283,7 @@ function gc_boxposts_function( $atts ){
 		'posts_per_row' => 5,
 		'show_posts' => 5
 	), $atts ) );
-	$post_output = '<div class="gc-row-list"><div class="gc-center">';
+	$post_output = '<div class="gc-row-list" role="table"><div class="gc-center" role="row">';
 	wp_reset_query();
 	$n = 0;
 	$args = array( 'posts_per_page'=>$show_posts );
@@ -242,34 +310,40 @@ function gc_boxposts_function( $atts ){
 			if( $n % $posts_per_row == 0 ) {
 				$endItemDiv = '<div class="gc-box-item-last"></div>';
 				if( $n != $num_posts ) {
-					$endItemDiv .= '</div><div class="gc-center">';
+					$endItemDiv .= '</div><div class="gc-center" role="row">';
 				}
 			} else {
 				$endItemDiv = '<div class="gc-box-item-row"></div>';
 			}
 			// get post url, title and image
 			$postUrl = get_the_permalink();
-			$title = gc_word_trim( get_the_title(), 38 );
+			$postTitle = gc_word_trim( get_the_title(), 38 );
+			$imgAlt = 'No image';
 			if( has_post_thumbnail()) {
-				$med_imgSrc = wp_get_attachment_image_src( get_post_thumbnail_id(), 'medium');
+				$imgId = get_post_thumbnail_id();
+				$imgAlt = get_post_meta( $imgId, '_wp_attachment_image_alt', TRUE );
+				if( $imgAlt == '' ) {
+					$imgAlt = get_the_title( $imgId );
+				}
+				$med_imgSrc = wp_get_attachment_image_src( $imgId, 'medium');
 				$imgUrl = $med_imgSrc[0];
 			} else {
 				$imgUrl = get_template_directory_uri().'/images/not_found.png';
 			}
 			// output the HTML
 			if( $format == 'circle' ) {
-				$post_output .= '<div class="gc-box-item">
+				$post_output .= '<div class="gc-box-item" role="cell">
 					<a href="'.$postUrl.'">
-						<div class="gc-circle-tag"><img src="'.$imgUrl.'" alt="" /></div>
-						<p>'.$title.'</p>
+						<div class="gc-circle-tag"><img src="'.$imgUrl.'" alt="'.$imgAlt.'" /></div>
+						<p>'.$postTitle.'</p>
 					</a>
 				</div>
 				'.$endItemDiv;
 			} else {
-				$post_output .= '<div class="gc-box-item">
+				$post_output .= '<div class="gc-box-item" role="cell">
 					<a href="'.$postUrl.'">
-						<div class="gc-rect-image"><img src="'.$imgUrl.'" alt="" /></div>
-						<div class="gc-rect-content"><p>'.$title.'</p></div>
+						<div class="gc-rect-image"><img src="'.$imgUrl.'" alt="'.$imgAlt.'" /></div>
+						<div class="gc-rect-content"><p>'.$postTitle.'</p></div>
 					</a>
 				</div>
 				'.$endItemDiv;

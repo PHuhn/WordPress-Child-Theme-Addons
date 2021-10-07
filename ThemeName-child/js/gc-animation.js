@@ -161,10 +161,12 @@ if( marqueesToShowOnce.length > 0 ) {
 function gc_call_writers( element ) {
 	if( element.classList.contains( 'gc-is-visible' ) === false ) {
 		if( element.classList.contains( 'gc-word-writer' ) === true ) {
-			gc_wordWriter( element, element.innerHTML );
+			var millisec = parseInt( element.dataset.millisec );
+			gc_wordWriter( element, element.innerHTML, millisec );
 		}
 		if( element.classList.contains( 'gc-type-writer' ) === true ) {
-			gc_typeWriter( element, element.innerHTML );
+			var millisec = parseInt( element.dataset.millisec );
+			gc_typeWriter( element, element.innerHTML, millisec );
 		}
 	}
 }
@@ -172,15 +174,15 @@ function gc_call_writers( element ) {
 ** Function: gc_wordWriter
 ** Type out the content a word at a time
 */
-function gc_wordWriter( el, txt ) {
-	var _i = 0; var _speed = 200;
+function gc_wordWriter( el, txt, speed ) {
+	var _i = 0;
 	var _words = txt.split(' ');
 	el.innerHTML = '';
 	function gc_wordLoop() {
 		if (_i < _words.length) {
 			el.innerHTML += _words[_i] + ' ';
 			_i++;
-			setTimeout( gc_wordLoop, _speed );
+			setTimeout( gc_wordLoop, speed );
 		}
 	}
 	gc_wordLoop( ); // Call the loop for the first time
@@ -189,14 +191,14 @@ function gc_wordWriter( el, txt ) {
 ** Function: gc_typeWriter
 ** type out the content a leter at a time
 */
-function gc_typeWriter( el, txt ) {
-	var _i = 0; var _speed = 50;
+function gc_typeWriter( el, txt, speed ) {
+	var _i = 0;
 	el.innerHTML = '';
 	function gc_typeLoop() {
 		if (_i < txt.length) {
 			el.innerHTML += txt.charAt(_i);
 			_i++;
-			setTimeout( gc_typeLoop, _speed );
+			setTimeout( gc_typeLoop, speed );
 		}
 	}
 	gc_typeLoop( ); // Call the loop for the first time
