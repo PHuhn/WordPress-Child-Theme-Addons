@@ -56,14 +56,14 @@ Additional stand-alone animation:
 
 ## gc_counter animation
 
-gc_counter animation is a combination of PHP (shortcode), Javascript and CSS.
+[gc_counter] animation is a combination of PHP (shortcode), Javascript and CSS.
 
 The following is an example of the shortcode:
 
 `[gc_counter id="cups-1" start="1000" end="2000" inc="50" interval="80"]`
 
 The arguments are as follows:
-- id:    (not require) will assign a div id (id value must be unique on the page)
+- id:    (not require) will assign a div id (**'id'** value must be unique on the page)
 - start: (defaults to 0) is the starting counter value
 - end:   (defaults to 100) is the ending counter value
 - inc:   (defaults to 5, not less than 1) is the incremental value of the counter
@@ -71,14 +71,14 @@ The arguments are as follows:
 
 ## gc_marquee animation
 
-gc_marquee animation is a combination of PHP (shortcode), Javascript and CSS.  gc_marquee displays a marquee/ticker.
+[gc_marquee] animation is a combination of PHP (shortcode), Javascript and CSS.  [gc_marquee] displays a marquee/ticker.
 
 The following is an example of the shortcode:
 
 `[gc_marquee id="marq-1" text="Short marquee text!" milli-sec="16000" height="75" bg-color="black" text-color="#dddddd" text-tag="h3" margin="15" weight="bold"]`
 
 The arguments are as follows:
-- id:         (not require) assigns an id for the outer tag (id value must be unique on the page).
+- id:         (not require) assigns an id for the outer tag (**'id'** value must be unique on the page).
 - text:       (required) text for the marquee.
 - milli-sec:  (defaults to 20000 or 20 seconds) # of milliseconds to finish one full pass
 - height:     (defaults to 28px) style height applied to outer tag.
@@ -90,7 +90,7 @@ The arguments are as follows:
 
 ## gc_type_writer animation
 
-gc_type_writer animation is a combination of PHP (shortcode), Javascript and CSS. gc_type_writer displays text a letter or word at a time.
+[gc_type_writer] animation is a combination of PHP (shortcode), Javascript and CSS. [gc_type_writer] displays text a letter or word at a time.
 
 The following are examples of the shortcode:
 
@@ -101,7 +101,7 @@ or:
 `[gc_type_writer id="tw-2" text="Short type writer text!" type="word" milli-sec="450" bg-color="darkgray" text-color="red" text-tag="p" weight="bold"]`
 
 The arguments are as follows:
-- id:         (not require) assigns an id for the tag (id value must be unique on the page),
+- id:         (not require) assigns an id for the tag (**'id'** value must be unique on the page),
 - text:       (required) text for the type writer,
 - type:       (default is letter) options of letter/word,
 - milli-sec:  (default 50 or 1/20 seconds) # of milliseconds between typing,
