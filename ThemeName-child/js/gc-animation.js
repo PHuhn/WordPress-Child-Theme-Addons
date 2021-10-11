@@ -29,6 +29,7 @@ var elementsToShow = document.querySelectorAll( '.gc-show-on-scroll' );
 var elementsToShowOnce = document.querySelectorAll( '.gc-show-once-on-scroll' );
 var countersToShowOnce = document.querySelectorAll( 'div.gc-counter' );
 var marqueesToShowOnce = document.querySelectorAll( 'div.gc-marquee > .gc-scrollingtext' );
+var gc_sliders = document.querySelectorAll( '.gc-slider' );
 /**
 ** Function: gc_loop
 ** Loop on an interval to check the viewport.  If an element is being
@@ -203,4 +204,65 @@ function gc_typeWriter( el, txt, speed ) {
 	}
 	gc_typeLoop( ); // Call the loop for the first time
 }
+// =======================================================================
+/**
+** Get all sliders, loop through the items and set display
+** to none and block.
+*/
+if( gc_sliders.length > 0 ) {
+	console.log( gc_sliders );
+	Array.prototype.forEach.call( gc_sliders, function( gc_slider ) {
+		var millisec = parseInt( gc_slider.dataset.millisec );
+		var items = gc_slider.children[1];
+		var count = items.children.length - 1;
+		var counter = gc_slider.children[3];
+		// process first slider item without delay
+		var idx = gc_slider_shift( gc_slider, items, millisec, count, count, 'table' );
+		gc_slider_counter( counter, idx, count );
+		console.log( items );
+		var interval = setInterval( function() {
+			idx = gc_slider_shift( gc_slider, items, millisec, idx, count, 'table' );
+			gc_slider_counter( counter, idx, count );
+		}, millisec );
+	} );
+}
+/**
+** Function: gc_slider_shift
+** Turns off the display of the current child and moves to the 
+** next child and turns that item to display on.
+*/
+function gc_slider_shift( gc_slider, items, millisec, idx, count, display ) {
+	if ( gc_slider.classList.contains('gc-paused') === false ) {
+		items.children[idx].style.display = 'none';
+		idx = ( idx === count ? 0 : ++idx );
+		items.children[idx].style.display = display;
+		// console.log( `${gc_slider.id} ${idx}, ${millisec}, ${count}` );
+	}
+	return idx;
+}
+/**
+** Function: gc_slider_counter
+** Construct the display of the counter of "# of #", example "1 of 3"
+*/
+function gc_slider_counter( gc_slider, idx, count ) {
+	gc_slider.innerHTML = `${idx + 1} of ${count + 1}`;
+	return idx;
+}
+/**
+** Function: gc_slider_hover
+** Add a class of paused to the element.
+*/
+function gc_slider_hover( element ) {
+	element.classList.add('gc-paused');
+	return false;
+}
+/**
+** Function: gc_slider_hover_leave
+** Remove a class of paused to the element.
+*/
+function gc_slider_hover_leave( element ) {
+	element.classList.remove('gc-paused');
+	return false;
+}
+// = End of image slider =
 // ===========================================================================

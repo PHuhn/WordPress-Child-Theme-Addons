@@ -3,7 +3,7 @@
 Theme Name: Twenty Twenty Child
 Author: Phil Huhn
 Description: Twenty Twenty Child theme.
-Version: 1.1.1
+Version: 1.2.0
 Template: twentytwenty
 */
 /* GiveCamp (gc) animation */
@@ -147,4 +147,133 @@ Template: twentytwenty
 	transform: none;
 	opacity: 1;
 }
+/*
+== slider and image slider items =
+*/
+@keyframes gc_fadeInLeft {
+	0% {
+		opacity: 0;
+		-webkit-transform: translate3d(-120%, 0, 0);
+		transform: translate3d(-120%, 0, 0);
+	}
+	100% {
+		opacity: 1;
+		-webkit-transform: none;
+		transform: none;
+	}
+}
+@-webkit-keyframes gc_fadeInLeftBig {
+	0% {
+		opacity: 0;
+		-webkit-transform: translate3d(-2000px, 0, 0);
+		transform: translate3d(-2000px, 0, 0);
+	}
+	100% {
+		opacity: 1;
+		-webkit-transform: none;
+		transform: none;
+	}
+}
+@keyframes gc_fadeInLeftBig {
+	0% {
+		opacity: 0;
+		-webkit-transform: translate3d(-2000px, 0, 0);
+		transform: translate3d(-2000px, 0, 0);
+	}
+	100% {
+		opacity: 1;
+		-webkit-transform: none;
+		transform: none;
+	}
+}
+.gc-fadeInLeft {
+	-webkit-animation-name: gc_fadeInLeft;
+	animation-name: gc_fadeInLeft;
+	animation-duration: 2s;
+}
+.gc-fadeInLeftBig {
+	-webkit-animation-name: gc_fadeInLeftBig;
+	animation-name: gc_fadeInLeftBig;
+	animation-duration: 3s;
+}
+
+@keyframes gc_fadeInRight {
+	0% {
+		opacity: 0.2;
+		-webkit-transform: translate3d(120%, 0, 0);
+		-moz-transform: translate3d(120%, 0, 0);
+		transform: translate3d(120%, 0, 0);
+	}
+	100% {
+		opacity: 1;
+		-moz-transform: none;
+		-webkit-transform: none;
+		transform: none;
+	}
+}
+@-webkit-keyframes gc_fadeInRightBig {
+	0% {
+		opacity: 0;
+		-webkit-transform: translate3d(1000px, 0, 0);
+		transform: translate3d(1000px, 0, 0);
+	}
+	100% {
+		opacity: 1;
+		-webkit-transform: none;
+		transform: none;
+	}
+}
+@keyframes gc_fadeInRightBig {
+	0% {
+		opacity: 0;
+		-webkit-transform: translate3d(1000px, 0, 0);
+		transform: translate3d(1000px, 0, 0);
+	}
+	100% {
+		opacity: 1;
+		-webkit-transform: none;
+		transform: none;
+	}
+}
+.gc-fadeInRight {
+	-webkit-animation-name: gc_fadeInRight;
+	animation-name: gc_fadeInRight;
+	animation-duration: 2s;
+}
+.gc-fadeInLeft img, .gc-fadeInRight img { max-width: 100%; max-height: 100%; }
+.gc-fadeInRightBig {
+	-webkit-animation-name: gc_fadeInRightBig;
+	animation-name: gc_fadeInRightBig;
+	animation-duration: 3s;
+}
+
+.gc-slider {
+	display: block;
+}
+.gc-slider:hover { box-shadow: 0 0 40px #616161; }
+.gc-slider-items,
+.gc-slider-header,
+.gc-slider-counter,
+.gc-slider-footer {
+	width: 100%;
+	text-align: center;
+}
+/* image slider items */
+.gc-img-slider-item {
+	display: none;
+	width: 100%;
+}
+.gc-img-slider-title {
+	width: 50%;
+	text-align: center !important;
+	display: table-cell;
+	padding: 5px;
+	vertical-align: middle;
+}
+.gc-img-slider-image {
+	width: 50%;
+	display: table-cell;
+	vertical-align: middle;
+}
+/* = End of slider and image slider items = */
 /* ======================================================================== */

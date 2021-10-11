@@ -8,6 +8,9 @@ The addons are as follows:
 - gc_counter animation (shortcode, js and CSS)
 - gc_marquee animation (shortcode, js and CSS)
 - gc_type_writer animation (shortcode, js and CSS)
+- gc_slider animation (shortcode, js and CSS)
+- gc_image_item animation (shortcode, js and CSS)
+- gc_slider and gc_image_item
 - gc_box_posts (shortcode and CSS)
 - gc_year (shortcode)
 
@@ -106,6 +109,70 @@ The arguments are as follows:
 - text-color: (system default) font color applied to the tag,
 - text-tag:   (default is p) HTML tag value,
 - weight:     (defaults to none) font-weight style applied to the tag.
+
+## gc_slider
+
+[gc_slider] returns the HTML code for an animated GC slider.
+[gc_slider] is a two part shortcode as follows [gc_slider]content[/gc_slider].  The content is imbedded and should be another list of shortcodes.  Also see the [gc_image_item] shortcode.
+This is a wrapper for another shortcodes or content.  It renders a
+collection of items, all set to display: none (i.e. hidden).
+The JavaScript loops through allow each one to display the item.
+
+Note:
+
+That [gc_slider] will remove <br /> from the output.  If you want to use a br in the imbedded content, try using a <br/> instead.
+
+[gc_slider] shortcode example:
+
+[gc_slider type='image' aria_label='Beautiful sunrises on Lake Huron' milli_sec='5500' bg_color='#dddddd' text_color='brown']Your content here...[/gc_slider]
+
+The arguments are as follows:
+- id:         (not require) assigns an id for the tag (**'id'** value must be unique on the page),
+- type:       (required, default none) type/role of slider, options are img/list,
+- aria_label: (default 'Marketing images') accessibility value for the slider,
+- milli_sec:  (default 5000 or 5 seconds) # of milliseconds to finish one full pass,
+- header:     (default none) header for the slider,
+- footer:     (default none) footer for the slider,
+- bg_color:   (default none) background color applied to outer div tag,
+- text_color: (default none) font color applied to outer div tag.
+
+## gc_image_item
+
+[gc_image_item] is used with the [gc_slider] shortcode.  This displays an image on one half of the screen and the title on the other half.  Both the image and the title slide in on the **'image_side'**.  The animation is done by CSS @keyframes.
+
+Note:
+
+That [gc_slider] will remove <br /> from the output.  If you want to use a br in the imbedded content, try using a <br/> instead.
+
+Example:
+
+[gc_image_item id='ii-1' image_id='22' image_title='Beautiful sunrise' image_side='right' bg_color='#dddddd' text_color='brown']
+
+The arguments are as follows:
+- id:              (not require) assigns an id for the tag (**'id'** value must be unique on the page),
+- image_id:        (default is none) id for an image, use either **'image_id'** or **'image_url'** to get image,
+- image_title:     (required, default none) display message (title) beside the image,
+- title_font_size: (required, default '60px') Font size of the image_title value,
+- image_side:      (required, default 'right') which side the image is on, options right/left,
+- image_url:       (default none) use either **'image_id'** or **'image_url'** to define which image,
+- image_alt:       (default none) needed if used **'image_url'**, if **'image_id'** used, it can get the value from the image (if available),
+- bg_color:        (default none) background color applied to title div tag,
+- text_color:      (default none) font color applied to title div tag.
+
+## gc_slider and gc_image_item
+
+Combine the [gc_slider] with the [gc_image_item] to create an image slider.
+
+If one needs to apply additional CSS, then I suggest using an **'id'** for the slider for a reference selector.  Then I suggest the **'id'** might be best to be unique across the site.
+
+Example:
+
+[gc_slider id='is-1' type='image' aria_label='Beautiful sunrises on Lake Huron' title='Sunrises' milli_sec='5500' bg_color='#dddddd' text_color='brown']
+[gc_image_item id='ii-1' image_id='1370' image_title='Beautiful sunrise' image_side='right' bg_color='#eeeeee' text_color='black']
+[gc_image_item id='ii-2' image_id='1369' image_title='Another sunrise' image_side='left' bg_color='#eeeeee' text_color='brown']
+[gc_image_item id='ii-1' image_id='1368' image_title='Beautiful sunrise' image_side='right' bg_color='#eeeeee' text_color='black']
+[gc_image_item id='ii-2' image_id='1367' image_title='Another sunrise' image_side='left' bg_color='#eeeeee' text_color='brown']
+[/gc_slider]
 
 ## gc_box_posts
 
