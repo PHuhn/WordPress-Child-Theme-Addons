@@ -318,7 +318,7 @@ function gc_boxposts_function( $atts ){
 			// get post url, title and image
 			$postUrl = get_the_permalink();
 			$postTitle = gc_word_trim( get_the_title(), 38 );
-			$imgAlt = 'No image';
+			$imgAlt = 'Image unknown';
 			if( has_post_thumbnail()) {
 				$imgId = get_post_thumbnail_id();
 				$imgAlt = get_post_meta( $imgId, '_wp_attachment_image_alt', TRUE );
@@ -328,7 +328,7 @@ function gc_boxposts_function( $atts ){
 				$med_imgSrc = wp_get_attachment_image_src( $imgId, 'medium');
 				$imgUrl = $med_imgSrc[0];
 			} else {
-				$imgUrl = get_template_directory_uri().'/images/not_found.png';
+				$imgUrl = get_stylesheet_directory_uri().'/images/not_found.png';
 			}
 			// output the HTML
 			if( $format == 'circle' ) {
@@ -477,8 +477,6 @@ function gc_slider_shortcode( $atts, $content = null ) {
 	}
 	// remove br from output
 	$stripped_content = do_shortcode( str_replace(array('<br />' ), '', $content ) );
-	error_log( $stripped_content );
-	// $stripped_content = str_replace( '<br />', '', do_shortcode( str_replace(array("\n\r", "\n", "\r"), '', $content ) ) );
 	if( substr( $stripped_content, 0, 4 ) == "</p>") {
 		// sometimes do_shortcode produces </p>content<p>
 		$len = strlen(  $stripped_content );
@@ -494,7 +492,6 @@ function gc_slider_shortcode( $atts, $content = null ) {
 		$footer_div .
 		$counter_div .
 		"</div>";
-	// error_log( $output );
 	return $output;
 }
 /*
@@ -565,16 +562,25 @@ function gc_image_item_shortcode( $atts ) {
 		$img_side = 'Right';
 		$tit_side = 'Right';
 	}
-	//
+	// Protect $image_url and $image_alt from update
 	if( $image_id != '' ) {
-		$alt = get_post_meta( absint( $image_id ), '_wp_attachment_image_alt', TRUE );
+		$img_id = absint( $image_id );
+		$alt = get_post_meta( $img_id, '_wp_attachment_image_alt', TRUE );
 		if( $alt != '' ) {
 			$image_alt = $alt;
 		}
-		$lrg_img = wp_get_attachment_image_src( absint( $image_id ), 'large');
-		if( count( $lrg_img ) > 0 ) {
-			$image_url = $lrg_img[0];
+		$lrg_img = wp_get_attachment_image_src( $img_id, 'large');
+		if( $lrg_img ) {
+			if( count( $lrg_img ) > 0 ) {
+				$image_url = $lrg_img[0];
+			}
 		}
+	}
+	if( $image_url == '' ) {
+		$image_url = get_stylesheet_directory_uri().'/images/not_found_land.png';
+	}
+	if( $image_alt == '' ) {
+		$image_alt = 'Image unknown';
 	}
 	$background_color = '';
 	if( $bg_color != '' ) {
@@ -604,6 +610,9 @@ function gc_image_item_shortcode( $atts ) {
 	// error_log( $output );
 	return $output;
 }
+/*
+** Register [gc_image_item] that returns the HTML code for a GC slider image item.
+*/
 add_shortcode( 'gc_image_item', 'gc_image_item_shortcode' );
 /*
 ** ===========================================================================
