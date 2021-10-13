@@ -590,10 +590,10 @@ function gc_image_item_shortcode( $atts ) {
 	}
 	//
 	$item_div = "<div " .$ident . " class='gc-img-slider-item' role='img'" . $style . ">\n";
-	$tit_tag = "	<div class='gc-fadeIn" . $tit_side . "Big gc-img-slider-title'>\n" .
+	$tit_tag = "	<div class='gc-fadeIn" . $tit_side . "Big gc-is-visible gc-img-slider-title'>\n" .
 		"		<p style='font-size: " . $title_font_size . ";'>" . esc_attr( $image_title ) . "</p>\n" .
 		"	</div>\n";
-	$img_tag = "	<div class='gc-fadeIn" . $img_side . " gc-img-slider-image'>\n" .
+	$img_tag = "	<div class='gc-fadeIn" . $img_side . " gc-is-visible gc-img-slider-image'>\n" .
 		"		<img src='" . $image_url . "' alt='" . $image_alt . "'/>\n" .
 		"	</div>\n";
 	if( $image_side == 'left' ) {

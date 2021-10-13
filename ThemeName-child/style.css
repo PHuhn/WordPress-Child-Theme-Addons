@@ -186,12 +186,12 @@ Template: twentytwenty
 		transform: none;
 	}
 }
-.gc-fadeInLeft {
+.gc-fadeInLeft.gc-is-visible {
 	-webkit-animation-name: gc_fadeInLeft;
 	animation-name: gc_fadeInLeft;
 	animation-duration: 2s;
 }
-.gc-fadeInLeftBig {
+.gc-fadeInLeftBig.gc-is-visible {
 	-webkit-animation-name: gc_fadeInLeftBig;
 	animation-name: gc_fadeInLeftBig;
 	animation-duration: 3s;
@@ -235,13 +235,15 @@ Template: twentytwenty
 		transform: none;
 	}
 }
-.gc-fadeInRight {
+.gc-fadeInRight.gc-is-visible {
 	-webkit-animation-name: gc_fadeInRight;
 	animation-name: gc_fadeInRight;
 	animation-duration: 2s;
 }
-.gc-fadeInLeft img, .gc-fadeInRight img { max-width: 100%; max-height: 100%; }
-.gc-fadeInRightBig {
+.gc-fadeInLeftBig img, .gc-fadeInRightBig img,
+.gc-fadeInLeft img, .gc-fadeInRight img {
+	 max-width: 100%; max-height: 100%; }
+.gc-fadeInRightBig.gc-is-visible {
 	-webkit-animation-name: gc_fadeInRightBig;
 	animation-name: gc_fadeInRightBig;
 	animation-duration: 3s;
