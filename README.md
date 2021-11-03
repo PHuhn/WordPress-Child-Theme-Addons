@@ -120,7 +120,7 @@ The JavaScript loops through allow each one to display the item.
 
 Note:
 
-That [gc_slider] will remove <br /> from the output.  If you want to use a br in the imbedded content, try using a <br/> instead.
+That [gc_slider] will remove `<br />` from the output.  If you want to use a br in the imbedded content, try using a `<br/>` instead.
 
 [gc_slider] shortcode example:
 
