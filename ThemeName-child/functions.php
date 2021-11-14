@@ -484,7 +484,7 @@ function gc_slider_shortcode( $atts, $content = null ) {
 	}
 	// error_log( $stripped_content );
 	// remove br from output
-	$output = "<div" .$ident . " class='gc-slider' aria-roledescription='slide'" . $aria . $style . $hover . $milli_data . ">\n" .
+	$output = "<div" .$ident . " class='gc-slider' aria-roledescription='carousel'" . $aria . $style . $hover . $milli_data . ">\n" .
 		$header_div .
 		"	<div aria-hidden='true' aria-live='off' class='gc-slider-items'". $role . ">\n" .
 		$stripped_content .
@@ -625,7 +625,7 @@ add_shortcode( 'gc_image_item', 'gc_image_item_shortcode' );
 ** * border_color  style for border, if value then 1px solid border, (default is none)
 **
 ** @return string div HTML Code as follows:
-**  <div id="si-1" class="gc-slider-item gc-fadeInLeft gc-is-visible" aria-roledescription="carousel" role="article" style="color: brown; background-color: #eeeeee; display: table;">
+**  <div id="si-1" class="gc-slider-item gc-fadeInLeft gc-is-visible" aria-roledescription="slide" role="article" style="color: brown; background-color: #eeeeee; display: table;">
 **   <div style="display: table-cell; vertical-align: middle; heigth: 100px;">Hello World</div>
 **  </div>
 */
@@ -675,7 +675,7 @@ function gc_slider_item( $id, $type, $animate, $bg_color, $text_color, $border_c
 		$len = strlen(  $stripped_content );
 		$stripped_content = substr( $stripped_content, 4, $len - 7 );
 	}
-	$item_div = "	<div " .$ident . " class='gc-slider-item" . $animateClass . "' aria-roledescription='carousel'" . $role . $style . ">\n";
+	$item_div = "	<div " .$ident . " class='gc-slider-item" . $animateClass . "' aria-roledescription='slide'" . $role . $style . ">\n";
 	// error_log( $item_div );
 	return $item_div . "\n" . $stripped_content . "\n" . "	</div>\n";
 }
