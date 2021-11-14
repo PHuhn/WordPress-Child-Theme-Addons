@@ -84,7 +84,8 @@ gc_loop( );
 /**
 ** Function: isElementInViewport
 ** If an element is being displayed or not being displayed.
-** @returns boolean value
+** @param {*} el: dom element to check if it is currently in view
+** @returns boolean value (true if element is in view port)
 */
 function isElementInViewport( el ) {
 	// special bonus for those using jQuery
@@ -104,11 +105,17 @@ function isElementInViewport( el ) {
 /**
 ** Function: gc_counter
 ** Recursively loop until end number.
+** @param {*} div: document selector containing gc-counter class
+** @param {*} start: initial count value 
+** @param {*} end: endding count value
+** @param {*} inc: increamental (step) value
+** @param {*} int: timeout interval
+** @returns void
 */
 function gc_counter_loop( div, start, end, inc, int ) {
 	if( div == undefined || div == null || start > end || inc < 1 || int < 10 || int > 999 ) {
-		console.log( `gc_counter_loop: ERROR, ${start} ${end} ${inc} ${int}` );
-		console.log( div );
+		console.error( `gc_counter_loop: ERROR, ${start} ${end} ${inc} ${int}` );
+		console.error( div );
 		return;
 	}
 	setTimeout( function( ) { 
@@ -126,14 +133,18 @@ function gc_counter_loop( div, start, end, inc, int ) {
 ** Function: gc_marquee_loop
 ** Recursively loop on the animation after one pass.
 ** See gc_marquee_shortcode in functions.php
+** @param {*} gc_marquee: dom element of the marquee
+** @param {*} millisec: timeout interval
+** @param {*} txtWidth: text width
+** @param {*} parWidth: parent element width
+** @returns void
 */
 function gc_marquee_loop( gc_marquee, millisec, txtWidth, parWidth ) {
 	if( gc_marquee == undefined || gc_marquee == null || millisec < 1000 ) {
-		console.log( `gc_marquee_loop: ERROR, ${millisec} ${txtWidth} ${parWidth}` );
+		console.error( `gc_marquee_loop: ERROR, ${millisec} ${txtWidth} ${parWidth}` );
 		return;
 	}
 	setTimeout( function( ) {
-		console.log( gc_marquee.parentElement );
 		gc_marquee.animate( [{ right: -txtWidth + 'px' }, { right: parWidth + 'px' }],
 			{ duration: millisec } );
 		gc_marquee_loop( gc_marquee, millisec, txtWidth, parWidth );
@@ -158,6 +169,7 @@ if( marqueesToShowOnce.length > 0 ) {
 /**
 ** Function: gc_call_writers (gc_wordWriter/gc_typeWriter)
 ** Check if the CSS class contains one of the writer classes.
+** @param {*} element: dom element containing writer class
 */
 function gc_call_writers( element ) {
 	if( element.classList.contains( 'gc-is-visible' ) === false ) {
@@ -174,6 +186,8 @@ function gc_call_writers( element ) {
 /**
 ** Function: gc_wordWriter
 ** Type out the content a word at a time
+** @param {*} el: dom element with gc-word-writer class
+** @param {*} txt: text string to split into words
 */
 function gc_wordWriter( el, txt, speed ) {
 	var _i = 0;
@@ -191,6 +205,8 @@ function gc_wordWriter( el, txt, speed ) {
 /**
 ** Function: gc_typeWriter
 ** type out the content a leter at a time
+** @param {*} el: dom element with gc-type-writer class
+** @param {*} txt: text string to to display leter at a time
 */
 function gc_typeWriter( el, txt, speed ) {
 	var _i = 0;
@@ -207,10 +223,17 @@ function gc_typeWriter( el, txt, speed ) {
 // =======================================================================
 /**
 ** Get all sliders, loop through the items and set display
-** to none and block.
+** to none and block.  The slider has the following:
+** slider
+**   header
+**   items
+**     item #0
+**     ...
+**     item #n
+**   footer
+**   counter
 */
 if( gc_sliders.length > 0 ) {
-	console.log( gc_sliders );
 	Array.prototype.forEach.call( gc_sliders, function( gc_slider ) {
 		var millisec = parseInt( gc_slider.dataset.millisec );
 		var items = gc_slider.children[1];
@@ -219,7 +242,6 @@ if( gc_sliders.length > 0 ) {
 		// process first slider item without delay
 		var idx = gc_slider_shift( gc_slider, items, millisec, count, count, 'table' );
 		gc_slider_counter( counter, idx, count );
-		console.log( items );
 		var interval = setInterval( function() {
 			idx = gc_slider_shift( gc_slider, items, millisec, idx, count, 'table' );
 			gc_slider_counter( counter, idx, count );
@@ -230,6 +252,13 @@ if( gc_sliders.length > 0 ) {
 ** Function: gc_slider_shift
 ** Turns off the display of the current child and moves to the 
 ** next child and turns that item to display on.
+** @param {*} gc_slider: dom element with gc-slider class
+** @param {*} items:     dom elements of slide-items of gc-slider element
+** @param {*} millisec:  timeout interval
+** @param {*} idx:       the current index (idx of count)
+** @param {*} count:     the total count of slides (idx of count)
+** @param {*} display:   display type, currently 'table'
+* @returns 
 */
 function gc_slider_shift( gc_slider, items, millisec, idx, count, display ) {
 	if ( gc_slider.classList.contains('gc-paused') === false ) {
@@ -243,6 +272,10 @@ function gc_slider_shift( gc_slider, items, millisec, idx, count, display ) {
 /**
 ** Function: gc_slider_counter
 ** Construct the display of the counter of "# of #", example "1 of 3"
+** @param {*} gc_slider: dom element with gc-slider class
+** @param {*} idx:       the current index (idx of count)
+** @param {*} count:     the total count of slides (idx of count)
+** @returns idx that was passed
 */
 function gc_slider_counter( gc_slider, idx, count ) {
 	gc_slider.innerHTML = `${idx + 1} of ${count + 1}`;
@@ -250,7 +283,10 @@ function gc_slider_counter( gc_slider, idx, count ) {
 }
 /**
 ** Function: gc_slider_hover
-** Add a class of paused to the element.
+** Add a class of paused to the element.  Aria requirement to be able
+** to pause the slider/carousel.
+** @param {*} element: dom hovered element with gc-slider class
+** @returns false
 */
 function gc_slider_hover( element ) {
 	element.classList.add('gc-paused');
@@ -259,6 +295,8 @@ function gc_slider_hover( element ) {
 /**
 ** Function: gc_slider_hover_leave
 ** Remove a class of paused to the element.
+** @param {*} element: dom hovered element with gc-slider class
+** @returns false
 */
 function gc_slider_hover_leave( element ) {
 	element.classList.remove('gc-paused');

@@ -395,14 +395,14 @@ function gc_word_trim( $str, $max_len )
 ** * bg_color   style background color applied to outer tag, default is none.
 ** * text_color style font color applied to outer tag, default is none.
 **
-** @return string div HTML Code as follows (the gc-img-slider-item div's are from
+** @return string div HTML Code as follows (the gc-slider-item div's are from
 **   the [gc_image_item] shortcode):
 **
 ** <div  id="is-1" class='gc-slider' role='slider' aria-label="Beautiful sunrises on Lake Huron" style='color: brown;background-color: #dddddd;' onmouseover='gc_slider_hover( this )' onmouseout='gc_slider_hover_leave( this )' data-millisec='5500'>
 **     <div aria-hidden='true' class='gc-slider-header'>Sunrises</div>
 **     <div aria-hidden='true' class='gc-slider-items'>
 **
-** <div  id="ii-1" class='gc-img-slider-item' role='img' style='color: black;background-color: #eeeeee;'>
+** <div  id="ii-1" class='gc-slider-item' role='img' style='color: black;background-color: #eeeeee;'>
 **     <div class='gc-fadeInRightBig gc-img-slider-title'>
 **         <p style='font-size: 60px;'>Beautiful sunrise</p>
 **     </div>
@@ -410,7 +410,7 @@ function gc_word_trim( $str, $max_len )
 **         <img src='http://localhost:9137/wp-content/uploads/2021/10/img_2768_2400-1024x768.jpg' alt='Sunrise on Lake Huron'/>
 **     </div>
 ** </div>
-** <div  id="ii-2" class='gc-img-slider-item' role='img' style='color: brown;background-color: #eeeeee;'>
+** <div  id="ii-2" class='gc-slider-item' role='img' style='color: brown;background-color: #eeeeee;'>
 **     <div class='gc-fadeInLeft gc-img-slider-image'>
 **         <img src='http://localhost:9137/wp-content/uploads/2021/10/img_2748_2400-1024x768.jpg' alt='Sunrise on Lake Huron'/>
 **     </div>
@@ -484,9 +484,9 @@ function gc_slider_shortcode( $atts, $content = null ) {
 	}
 	// error_log( $stripped_content );
 	// remove br from output
-	$output = "<div" .$ident . " class='gc-slider' role='slider'" . $aria . $style . $hover . $milli_data . ">\n" .
+	$output = "<div" .$ident . " class='gc-slider' aria-roledescription='slide'" . $aria . $style . $hover . $milli_data . ">\n" .
 		$header_div .
-		"	<div aria-hidden='true' class='gc-slider-items'". $role . ">\n" .
+		"	<div aria-hidden='true' aria-live='off' class='gc-slider-items'". $role . ">\n" .
 		$stripped_content .
 		"\n	</div>\n" .
 		$footer_div .
@@ -522,7 +522,7 @@ add_shortcode( 'gc_slider', 'gc_slider_shortcode' );
 ** * text_color      style font color applied to outer tag, default is none.
 **
 ** @return string div HTML Code as follows:
-** <div  id="ii-1" class='gc-img-slider-item' role='img' style='color: black;background-color: #eeeeee;'>
+** <div  id="ii-1" class='gc-slider-item' role='img' style='color: black;background-color: #eeeeee;'>
 **     <div class='gc-fadeInRightBig gc-img-slider-title'>
 **         <p style='font-size: 60px;'>Beautiful sunrise</p>
 **     </div>
@@ -551,11 +551,7 @@ function gc_image_item_shortcode( $atts ) {
 		return '';
 	}
 	// Create ouptut snippets from the parameters.
-	$ident = '';
-	if( $id != '' ) {
-		$ident = ' id="' . esc_attr( $id ) . '"';
-	}
-	if( $image_side == 'left' ) {
+	if( strtolower($image_side) == 'left' ) {
 		$img_side = 'Left';
 		$tit_side = 'Left';
 	} else {
@@ -582,20 +578,7 @@ function gc_image_item_shortcode( $atts ) {
 	if( $image_alt == '' ) {
 		$image_alt = 'Image unknown';
 	}
-	$background_color = '';
-	if( $bg_color != '' ) {
-		$background_color = "background-color: " . esc_attr( $bg_color ) . ";";
-	}
-	$color = '';
-	if( $text_color != '' ) {
-		$color = "color: " . esc_attr( $text_color ) . ";";
-	}
-	$style = '';
-	if( $background_color != '' or $color != '' ) {
-		$style = " style='" . $color . $background_color . "'";
-	}
 	//
-	$item_div = "<div " .$ident . " class='gc-img-slider-item' role='img'" . $style . ">\n";
 	$tit_tag = "	<div class='gc-fadeIn" . $tit_side . "Big gc-is-visible gc-img-slider-title'>\n" .
 		"		<p style='font-size: " . $title_font_size . ";'>" . esc_attr( $image_title ) . "</p>\n" .
 		"	</div>\n";
@@ -603,9 +586,9 @@ function gc_image_item_shortcode( $atts ) {
 		"		<img src='" . $image_url . "' alt='" . $image_alt . "'/>\n" .
 		"	</div>\n";
 	if( $image_side == 'left' ) {
-		$output = $item_div . $img_tag . $tit_tag . "</div>\n";
+		$output = gc_slider_item( $id, 'img', '', $bg_color, $text_color, '', $img_tag . $tit_tag );
 	} else {
-		$output = $item_div . $tit_tag . $img_tag . "</div>\n";
+		$output = gc_slider_item( $id, 'img', '', $bg_color, $text_color, '', $tit_tag . $img_tag );
 	}
 	// error_log( $output );
 	return $output;
@@ -614,6 +597,124 @@ function gc_image_item_shortcode( $atts ) {
 ** Register [gc_image_item] that returns the HTML code for a GC slider image item.
 */
 add_shortcode( 'gc_image_item', 'gc_image_item_shortcode' );
+/*
+** [gc_slider_item] is used with the [gc_slider] shortcode.  This wrappers
+** content.  [gc_slider_item] is a two part shortcode as follows:
+** [gc_slider_item]content[/gc_slider_item]
+** The animation is done by CSS @keyframes.
+** Note:
+**  That [gc_slider_item] will remove <br /> from the output.  If you want to
+**  use a br in the imbedded content, try using a <br/> instead.
+** Example:
+**  [gc_slider_item id='si-1' animate='fade-right' bg_color='#dddddd' text_color='brown']
+**   <div style="display: table-cell; vertical-align: middle; heigth: 100px;">Hello World</div>
+**  [/gc_slider_item]
+** Such that:
+** * id            An id for the outer tag (unique value on the page).
+** * type          Type/role of slider item, option is img/list (default is none),
+** * animate       Options for fade-in animation (default is none),
+**                 * fade-left
+**                 * fade-big-left
+**                 * fade-right
+**                 * fade-big-right
+**                 * fade-in
+**                 * fade-up
+**                 * fade-down
+** * bg_color      style background color applied to outer tag, default is none.
+** * text_color    style font color applied to outer tag, default is none.
+** * border_color  style for border, if value then 1px solid border, (default is none)
+**
+** @return string div HTML Code as follows:
+**  <div id="si-1" class="gc-slider-item gc-fadeInLeft gc-is-visible" aria-roledescription="carousel" role="article" style="color: brown; background-color: #eeeeee; display: table;">
+**   <div style="display: table-cell; vertical-align: middle; heigth: 100px;">Hello World</div>
+**  </div>
+*/
+function gc_slider_item_shortcode( $atts, $content = null ) {
+	extract( shortcode_atts( array(
+		'id' => '',
+		'type' => '',
+		'animate' => '',
+		'bg_color' => '',
+		'text_color' => '',
+		'border_color' => '',
+	), $atts ) );
+	return gc_slider_item( $id, $type, $animate, $bg_color, $text_color, $border_color, $content );
+}
+//
+function gc_slider_item( $id, $type, $animate, $bg_color, $text_color, $border_color, $content = null ) {
+	// Create ouptut snippets from the parameters.
+	$ident = '';
+	if( $id != '' ) {
+		$ident = ' id="' . esc_attr( $id ) . '"';
+	}
+	$role = '';
+	if( $type != '' ) {
+		$role = ' role="' . esc_attr( $type ) . '"';
+	}
+	$animateClass = gc_animation( $animate );
+	$background_color = '';
+	if( $bg_color != '' ) {
+		$background_color = "background-color: " . esc_attr( $bg_color ) . ";";
+	}
+	$color = '';
+	if( $text_color != '' ) {
+		$color = "color: " . esc_attr( $text_color ) . ";";
+	}
+	$border = '';
+	if(  $border_color != '' ) {
+		$border = "border: 1px solid " . esc_attr( $border_color ) . ";";
+	}
+	$style = '';
+	if( $background_color != '' or $color != '' or $border != '' ) {
+		$style = " style='" . $border . $color . $background_color . "'";
+	}
+	// remove br from output
+	$stripped_content = do_shortcode( str_replace(array('<br />' ), '', $content ) );
+	if( substr( $stripped_content, 0, 4 ) == "</p>") {
+		// sometimes do_shortcode produces </p>content<p>
+		$len = strlen(  $stripped_content );
+		$stripped_content = substr( $stripped_content, 4, $len - 7 );
+	}
+	$item_div = "	<div " .$ident . " class='gc-slider-item" . $animateClass . "' aria-roledescription='carousel'" . $role . $style . ">\n";
+	// error_log( $item_div );
+	return $item_div . "\n" . $stripped_content . "\n" . "	</div>\n";
+}
+/*
+** Return an animation class
+*/
+function gc_animation( $animate ) {
+	$animateClass = "";
+	switch (strtolower($animate)) {
+		case 'fade-left':
+			$animateClass = " gc-fadeInLeft gc-is-visible";
+			break;
+		case 'fade-big-left':
+			$animateClass = " gc-fadeInLeftBig gc-is-visible";
+			break;
+		case 'fade-right':
+			$animateClass = " gc-fadeInRight gc-is-visible";
+			break;
+		case 'fade-big-right':
+			$animateClass = " gc-fadeInRightBig gc-is-visible";
+			break;
+		case 'fade-in':
+			$animateClass = " gc-fade-in gc-is-visible";
+			break;
+		case 'fade-up':
+			$animateClass = " gc-fade-up gc-is-visible";
+			break;
+		case 'fade-down':
+			$animateClass = " gc-fade-down gc-is-visible";
+			break;
+		default:
+			$animateClass = "";
+	}
+	return $animateClass;
+}
+/*
+** Register [gc_slider_item] that returns the HTML code for a GC slider wrapper.
+*/
+add_shortcode( 'gc_slider_item', 'gc_slider_item_shortcode' );
 /*
 ** ===========================================================================
 ** [gc_year] returns text of the current year.

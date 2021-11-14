@@ -3,7 +3,7 @@
 Theme Name: Twenty Twenty Child
 Author: Phil Huhn
 Description: Twenty Twenty Child theme.
-Version: 1.2.2
+Version: 1.3.0
 Template: twentytwenty
 */
 /* GiveCamp (gc) animation */
@@ -261,7 +261,7 @@ Template: twentytwenty
 	text-align: center;
 }
 /* image slider items */
-.gc-img-slider-item {
+.gc-slider-item {
 	display: none;
 	width: 100%;
 }

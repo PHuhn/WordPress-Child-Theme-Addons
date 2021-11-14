@@ -10,7 +10,7 @@ The addons are as follows:
 - gc_type_writer animation (shortcode, js and CSS)
 - gc_slider animation (shortcode, js and CSS)
 - gc_image_item animation (shortcode, js and CSS)
-- gc_slider and gc_image_item
+- gc_slider, gc_image_item and gc_slider_item
 - gc_box_posts (shortcode and CSS)
 - gc_year (shortcode)
 
@@ -166,13 +166,50 @@ Combine the [gc_slider] with the [gc_image_item] to create an image slider.
 If one needs to apply additional CSS, then I suggest using an **'id'** for the slider for a reference selector.  Then I suggest the **'id'** might be best to be unique across the site.
 
 Example:
-
+```
 [gc_slider id='is-1' type='image' aria_label='Beautiful sunrises on Lake Huron' title='Sunrises' milli_sec='5500' bg_color='#dddddd' text_color='brown']
 [gc_image_item id='ii-1' image_id='1370' image_title='Beautiful sunrise' image_side='right' bg_color='#eeeeee' text_color='black']
 [gc_image_item id='ii-2' image_id='1369' image_title='Another sunrise' image_side='left' bg_color='#eeeeee' text_color='brown']
 [gc_image_item id='ii-1' image_id='1368' image_title='Beautiful sunrise' image_side='right' bg_color='#eeeeee' text_color='black']
 [gc_image_item id='ii-2' image_id='1367' image_title='Another sunrise' image_side='left' bg_color='#eeeeee' text_color='brown']
 [/gc_slider]
+```
+
+## gc_slider_item
+
+[gc_slider_item] is used with the [gc_slider] shortcode.  
+This shortcode wrappers content.  [gc_slider_item] is a two part shortcode as follows:
+
+[gc_slider_item]content[/gc_slider_item]
+
+The animation is done by CSS @keyframes.
+
+Note:
+
+That [gc_slider_item] will remove <br /> from the output.  If you want to use a br in the imbedded content, try using a <br/> instead.
+
+Example:
+```
+[gc_slider_item id='si-1' animate='fade-right' bg_color='#dddddd' text_color='brown']
+ <div style="display: table-cell; vertical-align: middle; heigth: 100px;">Hello World</div>
+[/gc_slider_item]
+```
+
+The arguments are as follows:
+
+- id:            An id for the outer tag (unique value on the page).
+- type:          Type/role of slider item, option is img/list (default is none),
+- animate:       Options for fade-in animation (default is none),
+  - fade-left
+  - fade-big-left
+  - fade-right
+  - fade-big-right
+  - fade-in
+  - fade-up
+  - fade-down
+- bg_color:      style background color applied to outer tag, default is none.
+- text_color:    style font color applied to outer tag, default is none.
+- border_color:  style for border, if value then 1px solid border, (default is none)
 
 ## gc_box_posts
 
