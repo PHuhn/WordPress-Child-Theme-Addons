@@ -270,6 +270,8 @@ add_shortcode( 'gc_type_writer', 'gc_type_writer_shortcode' );
 **                 the default is 5
 ** * showposts     the number of posts to displayed,
 **                 the default is 5
+** * orderby       order by option, the default is 'date'
+** * order         order direction option (DESC/ASC), the default is 'DESC'
 ** Examples:
 ** [gc_box_posts format='rectangle' category_slug='meetings' tag_slug='2020' posts_per_row=3 showposts=6]
 ** [gc_box_posts format='circle' category_slug='hnv-blogs' showposts=5]
@@ -281,23 +283,29 @@ function gc_boxposts_function( $atts ){
 		'category_slug' => '',
 		'tag_slug' => '',
 		'posts_per_row' => 5,
-		'show_posts' => 5
+		'show_posts' => 5,
+		'orderby' => 'date',
+		'order'   => 'DESC'
 	), $atts ) );
 	$post_output = '<div class="gc-row-list" role="table"><div class="gc-center" role="row">';
 	wp_reset_query();
 	$n = 0;
-	$args = array( 'posts_per_page'=>$show_posts );
+	$args = array(
+			'posts_per_page' => esc_attr( $show_posts ),
+			'orderby' => esc_attr( $orderby ),
+			'order' => esc_attr( $order ),
+		);
 	if( $post_type != '' ) {
 		// custom post_type=team
-		$args = array_merge( $args, array( 'post_type' => $post_type ) );
+		$args = array_merge( $args, array( 'post_type' => esc_attr( $post_type ) ) );
 	}
 	if( $category_slug != '' ) {
 		// cat=2, category_name=recovery
-		$args = array_merge( $args, array( 'category_name' => $category_slug ) );
+		$args = array_merge( $args, array( 'category_name' => esc_attr( $category_slug ) ) );
 	}
 	if( $tag_slug != '' ) {
 		// tag_id=2, 'tag' => 'bread,baking'
-		$args = array_merge( $args, array( 'tag_name' => $tag_slug ) );
+		$args = array_merge( $args, array( 'tag_name' => esc_attr( $tag_slug ) ) );
 	}
 	$events = new WP_Query( $args );
 	$num_posts = $events->post_count; 
@@ -436,6 +444,10 @@ function gc_slider_shortcode( $atts, $content = null ) {
 		'text_color' => '',
 	), $atts ) );
 	// error_log( print_r( $a, 2) );
+	return gc_slider( $id, $type, $aria_label, $milli_sec, $header, $footer, $bg_color, $text_color, $content );
+}
+//
+function gc_slider( $id, $type, $aria_label, $milli_sec, $header, $footer, $bg_color, $text_color, $content ) {
 	if( $type == '' ) {
 		return '';
 	}
@@ -475,15 +487,7 @@ function gc_slider_shortcode( $atts, $content = null ) {
 	if( $background_color != '' or $color != '' ) {
 		$style = " style='" . $color . $background_color . "'";
 	}
-	// remove br from output
-	$stripped_content = do_shortcode( str_replace(array('<br />' ), '', $content ) );
-	if( substr( $stripped_content, 0, 4 ) == "</p>") {
-		// sometimes do_shortcode produces </p>content<p>
-		$len = strlen(  $stripped_content );
-		$stripped_content = substr( $stripped_content, 4, $len - 7 );
-	}
-	// error_log( $stripped_content );
-	// remove br from output
+	$stripped_content = gc_fix_do_shortcode( $content );
 	$output = "<div" .$ident . " class='gc-slider' aria-roledescription='carousel'" . $aria . $style . $hover . $milli_data . ">\n" .
 		$header_div .
 		"	<div aria-hidden='true' aria-live='off' class='gc-slider-items'". $role . ">\n" .
@@ -543,7 +547,7 @@ function gc_image_item_shortcode( $atts ) {
 		'bg_color' => '',
 		'text_color' => '',
 	), $atts ) );
-	// error_log( print_r( $a, 2) );
+	//
 	if( $image_id == '' and image_url == '' ) {
 		return '';
 	}
@@ -590,7 +594,6 @@ function gc_image_item_shortcode( $atts ) {
 	} else {
 		$output = gc_slider_item( $id, 'img', '', $bg_color, $text_color, '', $tit_tag . $img_tag );
 	}
-	// error_log( $output );
 	return $output;
 }
 /*
@@ -668,16 +671,29 @@ function gc_slider_item( $id, $type, $animate, $bg_color, $text_color, $border_c
 	if( $background_color != '' or $color != '' or $border != '' ) {
 		$style = " style='" . $border . $color . $background_color . "'";
 	}
+	$stripped_content = gc_fix_do_shortcode( $content );
+	$item_div = "	<div " .$ident . " class='gc-slider-item" . $animateClass . "' aria-roledescription='slide'" . $role . $style . ">\n";
+	return $item_div . "\n" . $stripped_content . "\n" . "	</div>\n";
+}
+/*
+** Return $content with do_shortcode, but fixed as good as possible.
+** The content will have <br /> removed from the output.  If you want to
+** use a br in the imbedded content, try using a <br/> instead.
+*/
+function gc_fix_do_shortcode( $content ) {
+	remove_filter( 'the_content', 'wpautop' );
+	// sometimes do_shortcode still produces </p>content<p>
+	if( substr( $content, 0, 4 ) == "</p>") {
+		$len = strlen( $content );
+		if( substr( $content, $len - 3, 3 ) == "<p>") {
+			$content = substr( $content, 4, $len - 7 );
+		}
+	}
 	// remove br from output
 	$stripped_content = do_shortcode( str_replace(array('<br />' ), '', $content ) );
-	if( substr( $stripped_content, 0, 4 ) == "</p>") {
-		// sometimes do_shortcode produces </p>content<p>
-		$len = strlen(  $stripped_content );
-		$stripped_content = substr( $stripped_content, 4, $len - 7 );
-	}
-	$item_div = "	<div " .$ident . " class='gc-slider-item" . $animateClass . "' aria-roledescription='slide'" . $role . $style . ">\n";
-	// error_log( $item_div );
-	return $item_div . "\n" . $stripped_content . "\n" . "	</div>\n";
+	add_filter( 'the_content', 'wpautop' );
+	// error_log( $stripped_content );
+	return $stripped_content;
 }
 /*
 ** Return an animation class
