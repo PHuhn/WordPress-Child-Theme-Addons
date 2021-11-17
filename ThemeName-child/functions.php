@@ -276,7 +276,7 @@ add_shortcode( 'gc_type_writer', 'gc_type_writer_shortcode' );
 ** [gc_box_posts format='rectangle' category_slug='meetings' tag_slug='2020' posts_per_row=3 showposts=6]
 ** [gc_box_posts format='circle' category_slug='hnv-blogs' showposts=5]
 */
-function gc_boxposts_function( $atts ){
+function gc_boxposts_shortcode( $atts ){
 	extract( shortcode_atts( array(
 		'format' => 'rectangle',
 		'post_type' => '',
@@ -363,7 +363,7 @@ function gc_boxposts_function( $atts ){
 	wp_reset_query();
 	return $post_output;
 }
-add_shortcode( 'gc_box_posts', 'gc_boxposts_function' );
+add_shortcode( 'gc_box_posts', 'gc_boxposts_shortcode' );
 /*
 ** Truncate the string on the last word before max_len.
 */
@@ -402,6 +402,7 @@ function gc_word_trim( $str, $max_len )
 ** * footer     Footer for the slider, default is none,
 ** * bg_color   style background color applied to outer tag, default is none.
 ** * text_color style font color applied to outer tag, default is none.
+** * border_color  style for border, if value then 1px solid border, (default is none)
 **
 ** @return string div HTML Code as follows (the gc-slider-item div's are from
 **   the [gc_image_item] shortcode):
@@ -436,18 +437,19 @@ function gc_slider_shortcode( $atts, $content = null ) {
 	extract( shortcode_atts( array(
 		'id' => '',
 		'type' => '',
-		'aria_label' => 'Marketing images',
-		'milli_sec' => 5000,
-		'header' => '',
-		'footer' => '',
-		'bg_color' => '',
-		'text_color' => '',
+		'aria_label'	=> 'Marketing images',
+		'milli_sec'		=> 5000,
+		'header'		=> '',
+		'footer'		=> '',
+		'bg_color'		=> '',
+		'text_color'	=> '',
+		'border_color'	=> '',
 	), $atts ) );
 	// error_log( print_r( $a, 2) );
-	return gc_slider( $id, $type, $aria_label, $milli_sec, $header, $footer, $bg_color, $text_color, $content );
+	return gc_slider_function( $id, $type, $aria_label, $milli_sec, $header, $footer, $bg_color, $text_color, $border_color, $content );
 }
 //
-function gc_slider( $id, $type, $aria_label, $milli_sec, $header, $footer, $bg_color, $text_color, $content ) {
+function gc_slider_function( $id, $type, $aria_label, $milli_sec, $header, $footer, $bg_color, $text_color, $border_color, $content ) {
 	if( $type == '' ) {
 		return '';
 	}
@@ -483,9 +485,13 @@ function gc_slider( $id, $type, $aria_label, $milli_sec, $header, $footer, $bg_c
 	if( $text_color != '' ) {
 		$color = "color: " . esc_attr( $text_color ) . ";";
 	}
+	$border = '';
+	if(  $border_color != '' ) {
+		$border = "border: 1px solid " . esc_attr( $border_color ) . ";";
+	}
 	$style = '';
-	if( $background_color != '' or $color != '' ) {
-		$style = " style='" . $color . $background_color . "'";
+	if( $background_color != '' or $color != '' or $border != '' ) {
+		$style = " style='" . $color . $background_color . $border . "'";
 	}
 	$stripped_content = gc_fix_do_shortcode( $content );
 	$output = "<div" .$ident . " class='gc-slider' aria-roledescription='carousel'" . $aria . $style . $hover . $milli_data . ">\n" .
@@ -563,6 +569,7 @@ function gc_image_item_shortcode( $atts ) {
 		$tit_side = 'Right';
 	}
 	// Protect $image_url and $image_alt from update
+	$image_url = esc_attr( $image_url );
 	if( $image_id != '' ) {
 		$img_id = absint( $image_id );
 		$alt = get_post_meta( $img_id, '_wp_attachment_image_alt', TRUE );
@@ -584,15 +591,15 @@ function gc_image_item_shortcode( $atts ) {
 	}
 	//
 	$tit_tag = "	<div class='gc-fadeIn" . $tit_side . "Big gc-is-visible gc-img-slider-title'>\n" .
-		"		<p style='font-size: " . $title_font_size . ";'>" . esc_attr( $image_title ) . "</p>\n" .
+		"		<p style='font-size: " . esc_attr( $title_font_size ) . ";'>" . esc_attr( $image_title ) . "</p>\n" .
 		"	</div>\n";
 	$img_tag = "	<div class='gc-fadeIn" . $img_side . " gc-is-visible gc-img-slider-image'>\n" .
 		"		<img src='" . $image_url . "' alt='" . $image_alt . "'/>\n" .
 		"	</div>\n";
 	if( $image_side == 'left' ) {
-		$output = gc_slider_item( $id, 'img', '', $bg_color, $text_color, '', $img_tag . $tit_tag );
+		$output = gc_slider_item_function( $id, 'img', '', $bg_color, $text_color, '', $img_tag . $tit_tag );
 	} else {
-		$output = gc_slider_item( $id, 'img', '', $bg_color, $text_color, '', $tit_tag . $img_tag );
+		$output = gc_slider_item_function( $id, 'img', '', $bg_color, $text_color, '', $tit_tag . $img_tag );
 	}
 	return $output;
 }
@@ -641,10 +648,10 @@ function gc_slider_item_shortcode( $atts, $content = null ) {
 		'text_color' => '',
 		'border_color' => '',
 	), $atts ) );
-	return gc_slider_item( $id, $type, $animate, $bg_color, $text_color, $border_color, $content );
+	return gc_slider_item_function( $id, $type, $animate, $bg_color, $text_color, $border_color, $content );
 }
 //
-function gc_slider_item( $id, $type, $animate, $bg_color, $text_color, $border_color, $content = null ) {
+function gc_slider_item_function( $id, $type, $animate, $bg_color, $text_color, $border_color, $content = null ) {
 	// Create ouptut snippets from the parameters.
 	$ident = '';
 	if( $id != '' ) {
@@ -731,6 +738,140 @@ function gc_animation( $animate ) {
 ** Register [gc_slider_item] that returns the HTML code for a GC slider wrapper.
 */
 add_shortcode( 'gc_slider_item', 'gc_slider_item_shortcode' );
+/*
+** ===========================================================================
+** [gc_posts_slider] returns the HTML code for a GC animate a slider.  The
+** posts displayed can be a category, tag or custom post type.
+** Example:
+**  [gc_posts_slider id='ps-1' aria_label='Latest Meetings' category_slug='meetings' tag_slug='2020' show_posts=5 border_color='red']
+**
+** Such that:
+** * id            An id for the outer tag (unique value on the page).
+** * type          Type/role of slider, option is img/list (default is none this is required),
+** * aria_label    Accessibility value for the slider (default is none),
+** * milli_sec     # of milliseconds to finish one full pass (default 6000 or 6 seconds),
+** * header        Header for the slider (default is none),
+** * footer        Footer for the slider (default is none),
+** * bg_color      style background color applied to outer tag (default is none),
+** * text_color    style font color applied to outer tag (default is none),
+** * border_color  style for border, if value then 1px solid border (default is none),
+** * animate       Options for fade animation (default is fade-right),
+**                 * fade-left
+**                 * fade-big-left
+**                 * fade-right
+**                 * fade-big-right
+**                 * fade-in
+**                 * fade-up
+**                 * fade-down
+** * post_type     a custom post type (default to none),
+** * category_slug a post category slug or comma seperated slugs (default is none),
+**                 if blank the latest posts
+** * tag_slug      a post tag slug or comma seperated slugs (default is none),
+**                 if blank then see category_slug
+** * show_posts    the number of posts to displayed (the default is 5),
+** * show_date     include the date, option true/false (default is true),
+** * show_author   include the author, option true/false (default is true),
+** * orderby       order by option (default is 'date'),
+** * order         order direction option DESC/ASC (default is 'DESC')
+*/
+function gc_posts_slider_shortcode( $atts ){
+	extract( shortcode_atts( array(
+		'id'			=> '',
+		'type'			=> 'article',
+		'aria_label'	=> '',
+		'milli_sec'		=> 6000,
+		'header'		=> '',
+		'footer'		=> '',
+		'bg_color'		=> '',
+		'text_color'	=> '',
+		'border_color'	=> '',
+		//
+		'animate'	=> 'fade-right',
+		//
+		'post_type'	=> '',
+		'category_slug'	=> '',
+		'tag_slug'	=> '',
+		'show_posts'	=> 5,
+		'show_date'	=> 'true',
+		'show_author'	=> 'true',	
+		'orderby'	=> 'date',
+		'order'		=> 'DESC',
+	), $atts ) );
+	//
+	$post_output = '<div class="gc-row-list" role="table"><div class="gc-center" role="row">';
+	wp_reset_query();
+	$n = 0;
+	$args = array(
+			'posts_per_page' => esc_attr( $show_posts ),
+			'orderby' => esc_attr( $orderby ),
+			'order' => esc_attr( $order ),
+		);
+	if( $post_type != '' ) {
+		// custom post_type=team
+		$args = array_merge( $args, array( 'post_type' => esc_attr( $post_type ) ) );
+	}
+	if( $category_slug != '' ) {
+		// cat=2, category_name=recovery
+		$args = array_merge( $args, array( 'category_name' => esc_attr( $category_slug ) ) );
+	}
+	if( $tag_slug != '' ) {
+		// tag_id=2, 'tag' => 'bread,baking'
+		$args = array_merge( $args, array( 'tag_name' => esc_attr( $tag_slug ) ) );
+	}
+	$events = new WP_Query( $args );
+	$num_posts = $events->post_count;
+	$posts_output = '';
+	if ( $events->have_posts( ) ) :
+		while( $events->have_posts( ) ) : $events->the_post( );
+			//
+			// get post url, title and image
+			$postUrl = get_the_permalink();
+			$postTitle = get_the_title( );
+			$imgAlt = 'Image unknown';
+			$imgTag = '';
+			if( has_post_thumbnail()) {
+				$imgId = get_post_thumbnail_id();
+				$imgAlt = get_post_meta( $imgId, '_wp_attachment_image_alt', TRUE );
+				if( $imgAlt == '' ) {
+					$imgAlt = get_the_title( $imgId );
+				}
+				$med_imgSrc = wp_get_attachment_image_src( $imgId, 'thumbnail');
+				$imgUrl = $med_imgSrc[0];
+				$imgTag = '		<div class="gc-post-slider-image gc-fade-in gc-is-visible"><img src="'.$imgUrl.'" alt="' . $imgAlt . '" class="gc-post-slider-img" /></div>' . "\n";
+			}
+			if( strtolower( $show_date ) == 'true' ) {
+				$postDate = '<span class="gc-post-slider-date"><i class="far fa-calendar-alt"></i>  Date: ' . get_the_date('m-d-Y') . ' &nbsp;</span>';
+			} else {
+				$postDate = '';
+			}
+			if( strtolower( $show_author ) == 'true' ) {
+				$postAuthor = '<span class="gc-post-slider-author"><i class="far fa-user-circle"></i> By: '.get_the_author_posts_link().'</span>';
+			} else {
+				$postAuthor = '';
+			}
+			$dateAuthor = '';
+			if( $postAuthor != '' or $postDate != '' ) {
+				$dateAuthor = '	<div class="gc-post-slider-date-author">' . $postDate . $postAuthor . "</div>\n";
+			}
+			// output the HTML
+			$post_output = "<div class='gc-post-slider-container'>\n" .
+				'	<div class="gc-post-slider-title"><a href="' . $postUrl . '">' . $postTitle . "</a></div>\n" .
+				$dateAuthor .
+				"	<div class='gc-post-slider-image-text'>\n" .
+				$imgTag .
+				'		<p class="gc-post-slider-text">' . get_the_excerpt() . "</p>\n" .
+				"	</div>\n</div>\n";
+			$posts_output .= gc_slider_item_function( '', 'article', $animate, '', '', '', $post_output );
+ 		endwhile;
+	endif;
+	wp_reset_query();
+	return gc_slider_function( $id, $type, $aria_label, $milli_sec, $header, $footer, $bg_color, $text_color, $border_color, $posts_output );
+}
+/*
+** Register [gc_posts_slider] that returns the HTML code for a GC slider
+** with posts content.
+*/
+add_shortcode( 'gc_posts_slider', 'gc_posts_slider_shortcode' );
 /*
 ** ===========================================================================
 ** [gc_year] returns text of the current year.

@@ -12,6 +12,7 @@ The addons are as follows:
 - gc_image_item animation (shortcode, js and CSS)
 - gc_slider, gc_image_item and gc_slider_item
 - gc_box_posts (shortcode and CSS)
+- gc_posts_slider animation (shortcode, js and CSS)
 - gc_year (shortcode)
 
 ## gc_get_season
@@ -135,6 +136,7 @@ The arguments are as follows:
 - footer:     (default none) footer for the slider,
 - bg_color:   (default none) background color applied to outer div tag,
 - text_color: (default none) font color applied to outer div tag.
+- border_color: (default is none) style for border, if value then 1px solid border,
 
 ## gc_image_item
 
@@ -237,6 +239,42 @@ The arguments are as follows:
 - tag_slug:      (default to none) a post tag slug or comma seperated slugs, if blank then see category_slug
 - posts_per_row: (default is 5) the number of posts displayed in a row,
 - showposts:     (default is 5) the number of posts to displayed.
+
+## gc_posts_slider
+
+[gc_posts_slider] returns the HTML code for a GC animate a slider.  The
+posts displayed can be a category, tag or custom post type.
+
+Example:
+
+`[gc_posts_slider id='ps-1' aria_label='Latest Meetings' category_slug='meetings' tag_slug='2020' show_posts=5 border_color='red']`
+
+Such that:
+- id:           An id for the outer tag (unique value on the page).
+- type:         Type/role of slider, option is img/list (default is none this is required),
+- aria_label:   Accessibility value for the slider (default is none),
+- milli_sec:    # of milliseconds to finish one full pass (default 6000 or 6 seconds),
+- header:       Header for the slider (default is none),
+- footer:       Footer for the slider (default is none),
+- bg_color:     style background color applied to outer tag (default is none),
+- text_color:   style font color applied to outer tag (default is none),
+- border_color: style for border, if value then 1px solid border (default is none),
+- animate:      Options for fade animation (default is fade-right),
+  - fade-left
+  - fade-big-left
+  - fade-right
+  - fade-big-right
+  - fade-in
+  - fade-up
+  - fade-down
+- post_type:    a custom post type (default to none),
+- category_slug: a post category slug or comma seperated slugs (default is none), if blank the latest posts
+- tag_slug:     a post tag slug or comma seperated slugs (default is none), if blank then see category_slug
+- show_posts:   the number of posts to displayed (the default is 5),
+- show_date:    include the date, option true/false (default is true),
+- show_author:  include the author, option true/false (default is true),
+- orderby:      order by option (default is 'date'),
+- order:        order direction option DESC/ASC (default is 'DESC')
 
 ## gc_year
 
