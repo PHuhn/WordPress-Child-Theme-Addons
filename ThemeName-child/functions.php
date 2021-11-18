@@ -494,9 +494,9 @@ function gc_slider_function( $id, $type, $aria_label, $milli_sec, $header, $foot
 		$style = " style='" . $color . $background_color . $border . "'";
 	}
 	$stripped_content = gc_fix_do_shortcode( $content );
-	$output = "<div" .$ident . " class='gc-slider' aria-roledescription='carousel'" . $aria . $style . $hover . $milli_data . ">\n" .
+	$output = "<div" . $ident . " class='gc-slider'" . $style . $hover . $milli_data . ">\n" .
 		$header_div .
-		"	<div aria-hidden='true' aria-live='off' class='gc-slider-items'". $role . ">\n" .
+		"	<div class='gc-slider-items' " . $role . $aria . $hidden . " aria-roledescription='carousel'>\n" .
 		$stripped_content .
 		"\n	</div>\n" .
 		$footer_div .
