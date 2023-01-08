@@ -8,6 +8,19 @@ function my_theme_enqueue_styles() {
 		'/style.css' );
 }
 /*
+** Enqueues the external CSS file
+** Choose either mega-menu-2020.css or mega-menu-2022.css
+** based upon your theme.
+*/
+/*
+add_action( 'wp_enqueue_scripts', 'theme_enqueue_external_styles' );
+function theme_enqueue_external_styles() {
+	wp_register_style( 'mega-menu-css', get_stylesheet_directory_uri() .
+		'/assets/mega-menu-2022.css' );
+	wp_enqueue_style( 'mega-menu-css' );
+}
+*/
+/*
 ** ===========================================================================
 ** From: https://css-tricks.com/snippets/php/change-graphics-based-on-season/
 **

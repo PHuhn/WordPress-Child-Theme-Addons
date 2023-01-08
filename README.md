@@ -14,6 +14,7 @@ The addons are as follows:
 - gc_box_posts (shortcode and CSS)
 - gc_posts_slider animation (shortcode, js and CSS)
 - gc_year (shortcode)
+- gc-is-mega-sub-menu (CSS)
 
 ## gc_get_season
 
@@ -283,6 +284,40 @@ gc_year is a PHP (shortcode) function that returns the current year.
 The following is an example of the shortcode:
 
 `[gc_year]`
+
+## gc-is-mega-sub-menu
+
+Mega-menu is a menu that expands across the page (not so much down the page).  This is a possible solution of a long menu dropdown or navigating sub-sub-menus.  For example, the following menu structure:
+
+- Mega Menu
+  - Theme Templates
+    - Template Default
+    - Template Full Width
+    - Template Cover
+  - Blocks
+    - Text
+    - Media
+    - Design
+    - Gallery
+    - Widgets
+
+By placing gc-is-mega-sub-menu class on the top menu item of **Mega Menu**, will be displayed as the following:
+
+    Mega Menu
+     Theme Templates         Blocks
+      Template Default        Text
+      Template Full Width     Media
+      Template Cover          Design
+      Gallery
+      Widgets
+
+The above example solves navigating sub sub-menus.  If one has an overly long dropdown, one could group the dropdown into categories, thusly forming a similar structure as the example.
+
+Unfortunately, menu CSS varies greatly from theme to theme, so I have coded 2 pure CSS solutions for the 2020 and 2022 themes.
+
+See the wiki documentation instruction for implementing either solution.
+
+[GC Mega-Menu Documentation](https://github.com/PHuhn/WordPress-Child-Theme-Addons/wiki/Mega-Menu-Documentation)
 
 ## Instructions
 
