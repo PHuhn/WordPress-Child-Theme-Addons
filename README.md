@@ -9,12 +9,13 @@ The addons are as follows:
 - [gc_marquee animation](#gc_marquee) (shortcode, js and CSS)
 - [gc_type_writer animation](#gc_type_writer) (shortcode, js and CSS)
 - [gc_slider animation](#gc_slider) (shortcode, js and CSS)
-- gc_image_item animation (shortcode, js and CSS)
-- gc_slider, gc_image_item and gc_slider_item
-- gc_box_posts (shortcode and CSS)
-- gc_posts_slider animation (shortcode, js and CSS)
-- gc_year (shortcode)
-- GC Mega-menu .gc-is-mega-sub-menu (CSS)
+- [gc_image_item animation](#gc_image_item) (shortcode, js and CSS)
+- gc_slider and gc_image_item
+- [gc_slider_item](#gc_slider_item)
+- [gc_box_posts](#gc_box_posts) (shortcode and CSS)
+- [gc_posts_slider animation](#gc_posts_slider) (shortcode, js and CSS)
+- [gc_year](#gc_year) (shortcode)
+- [GC Mega-menu .gc-is-mega-sub-menu](#gc-is-mega-sub-menu) (CSS)
 
 ## gc_get_season
 
@@ -143,7 +144,8 @@ The arguments are as follows:
 - text_color: (default none) font color applied to outer div tag.
 - border_color: (default is none) style for border, if value then 1px solid border,
 
-## gc_image_item
+
+## <div name='gc_image_item'>gc_image_item</div>
 
 [gc_image_item] is used with the [gc_slider] shortcode.  This displays an image on one half of the screen and the title on the other half.  Both the image and the title slide in on the **'image_side'**.  The animation is done by CSS @keyframes.
 
@@ -182,7 +184,7 @@ Example:
 [/gc_slider]
 ```
 
-## gc_slider_item
+## <div name='gc_slider_item'>gc_slider_item</div>
 
 [gc_slider_item] is used with the [gc_slider] shortcode.  
 This shortcode wrappers content.  [gc_slider_item] is a two part shortcode as follows:
@@ -218,7 +220,8 @@ The arguments are as follows:
 - text_color:    style font color applied to outer tag, default is none.
 - border_color:  style for border, if value then 1px solid border, (default is none)
 
-## gc_box_posts
+
+## <div name='gc_box_posts'>gc_box_posts</div>
 
 gc_box_posts is a PHP (shortcode) function and CSS, that lists posts in two formats.  The formats are as follows:
 - rectangle: rectangular image with post title in white field,
@@ -245,7 +248,8 @@ The arguments are as follows:
 - posts_per_row: (default is 5) the number of posts displayed in a row,
 - showposts:     (default is 5) the number of posts to displayed.
 
-## gc_posts_slider
+
+## <div name='gc_posts_slider'>gc_posts_slider</div>
 
 [gc_posts_slider] returns the HTML code for a GC animate a slider.  The
 posts displayed can be a category, tag or custom post type.
@@ -281,7 +285,8 @@ Such that:
 - orderby:      order by option (default is 'date'),
 - order:        order direction option DESC/ASC (default is 'DESC')
 
-## gc_year
+
+## <div name='gc_year'>gc_year</div>
 
 gc_year is a PHP (shortcode) function that returns the current year.
 
@@ -294,7 +299,7 @@ One usage might be to display the copyright date in the footer as follows:
 `&copy; [gc_year] by Northern Software Group`
 
 
-## GC Mega-menu .gc-is-mega-sub-menu
+## <div name='gc-is-mega-sub-menu'>GC Mega-menu .gc-is-mega-sub-menu</div>
 
 Mega-menu is a menu that expands across the page (not so much down the page).  Mega-menu is a possible solution of a long menu dropdown or navigating sub-sub-menus.  For example, the following menu structure:
 
