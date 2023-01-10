@@ -4,17 +4,17 @@ This is a template for a WordPress child theme with a few custom addons.
 
 The addons are as follows:
 - gc_get_season (PHP function)
-- gc-fade animation (js and CSS)
-- gc_counter animation (shortcode, js and CSS)
-- gc_marquee animation (shortcode, js and CSS)
-- gc_type_writer animation (shortcode, js and CSS)
-- gc_slider animation (shortcode, js and CSS)
+- [gc-fade animation](#gc-fade) (js and CSS)
+- [gc_counter animation](#gc_counter) (shortcode, js and CSS)
+- [gc_marquee animation](#gc_marquee) (shortcode, js and CSS)
+- [gc_type_writer animation](#gc_type_writer) (shortcode, js and CSS)
+- [gc_slider animation](#gc_slider) (shortcode, js and CSS)
 - gc_image_item animation (shortcode, js and CSS)
 - gc_slider, gc_image_item and gc_slider_item
 - gc_box_posts (shortcode and CSS)
 - gc_posts_slider animation (shortcode, js and CSS)
 - gc_year (shortcode)
-- gc-is-mega-sub-menu (CSS)
+- GC Mega-menu .gc-is-mega-sub-menu (CSS)
 
 ## gc_get_season
 
@@ -36,7 +36,7 @@ The above will render as follows:
 
 `<body class="page-template-default page page-id-667 ... winter ...">`
 
-## gc-fade animation
+## <div name='gc-fade'>gc-fade animation</div>
 
 gc-fade animation is a combination of Javascript and CSS.
 
@@ -56,7 +56,8 @@ Each usage requires adding two CSS classes to the block:
 Additional stand-alone animation:
 - gc-pulse
 
-## gc_counter animation
+
+## <div name='gc_counter'>gc_counter animation</div>
 
 [gc_counter] animation is a combination of PHP (shortcode), Javascript and CSS.
 
@@ -71,7 +72,8 @@ The arguments are as follows:
 - inc:   (defaults to 5, not less than 1) is the incremental value of the counter
 - interval:  (defaults to 100) is the number of milliseconds between increments
 
-## gc_marquee animation
+
+## <div name='gc_marquee'>gc_marquee animation</div>
 
 [gc_marquee] animation is a combination of PHP (shortcode), Javascript and CSS.  [gc_marquee] displays a marquee/ticker.
 
@@ -90,7 +92,8 @@ The arguments are as follows:
 - margin:     (defaults to none) style applied to inner tag, if 5 then would look like 'margin 5px auto;'.
 - weight:     (defaults to none) font-weight style applied to inner tag.
 
-## gc_type_writer animation
+
+## <div name='gc_type_writer'>gc_type_writer animation</div>
 
 [gc_type_writer] animation is a combination of PHP (shortcode), Javascript and CSS. [gc_type_writer] displays text a letter or word at a time.
 
@@ -112,7 +115,8 @@ The arguments are as follows:
 - text-tag:   (default is p) HTML tag value,
 - weight:     (defaults to none) font-weight style applied to the tag.
 
-## gc_slider
+
+## <div name='gc_slider'>gc_slider</div>
 
 [gc_slider] returns the HTML code for an animated GC slider.
 [gc_slider] is a two part shortcode as follows [gc_slider]content[/gc_slider].  The content is imbedded and should be another list of shortcodes.  Also see the [gc_image_item] shortcode.
@@ -285,11 +289,16 @@ The following is an example of the shortcode:
 
 `[gc_year]`
 
-## gc-is-mega-sub-menu
+One usage might be to display the copyright date in the footer as follows: 
 
-Mega-menu is a menu that expands across the page (not so much down the page).  This is a possible solution of a long menu dropdown or navigating sub-sub-menus.  For example, the following menu structure:
+`&copy; [gc_year] by Northern Software Group`
 
-- Mega Menu
+
+## GC Mega-menu .gc-is-mega-sub-menu
+
+Mega-menu is a menu that expands across the page (not so much down the page).  Mega-menu is a possible solution of a long menu dropdown or navigating sub-sub-menus.  For example, the following menu structure:
+
+- WP Features
   - Theme Templates
     - Template Default
     - Template Full Width
@@ -301,15 +310,15 @@ Mega-menu is a menu that expands across the page (not so much down the page).  T
     - Gallery
     - Widgets
 
-By placing gc-is-mega-sub-menu class on the top menu item of **Mega Menu**, will be displayed as the following:
+By placing gc-is-mega-sub-menu class on the top menu item of **WP Features**, the menu will be displayed as the following:
 
-    Mega Menu
+    WP Features
      Theme Templates         Blocks
       Template Default        Text
       Template Full Width     Media
       Template Cover          Design
-      Gallery
-      Widgets
+                              Gallery
+                              Widgets
 
 The above example solves navigating sub sub-menus.  If one has an overly long dropdown, one could group the dropdown into categories, thusly forming a similar structure as the example.
 
