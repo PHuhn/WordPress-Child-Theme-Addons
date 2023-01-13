@@ -1,6 +1,6 @@
 # WordPress-Child-Theme-Addons
 
-This is a template for a WordPress child theme with a few custom addons.
+This is a template for a WordPress child theme with a number of custom addons.
 
 The addons are as follows:
 - gc_get_season (PHP function)
@@ -10,12 +10,13 @@ The addons are as follows:
 - [gc_type_writer animation](#gc_type_writer) (shortcode, js and CSS)
 - [gc_slider animation](#gc_slider) (shortcode, js and CSS)
 - [gc_image_item animation](#gc_image_item) (shortcode, js and CSS)
-- gc_slider and gc_image_item
+- [gc_slider and gc_image_item example](#gc_slider_item-gc_image_item)
 - [gc_slider_item](#gc_slider_item)
 - [gc_box_posts](#gc_box_posts) (shortcode and CSS)
 - [gc_posts_slider animation](#gc_posts_slider) (shortcode, js and CSS)
 - [gc_year](#gc_year) (shortcode)
 - [GC Mega-menu .gc-is-mega-sub-menu](#gc-is-mega-sub-menu) (CSS)
+
 
 ## gc_get_season
 
@@ -25,7 +26,7 @@ gc_get_season is a PHP function that returns the following possible sting values
 - autumn
 - winter
 
-One use is this function can be used to inject a season into the page's class.  For example, say in twenty-twenty theme copy header.php into child theme and change the following from:
+One use is that this function can be used to inject a season into the page's class.  For example, say in twenty-twenty theme copy header.php into child theme and change the following from:
 
 `<body <?php body_class(); ?>>`
 
@@ -36,6 +37,7 @@ to:
 The above will render as follows:
 
 `<body class="page-template-default page page-id-667 ... winter ...">`
+
 
 ## <div name='gc-fade'>gc-fade animation</div>
 
@@ -100,15 +102,15 @@ The arguments are as follows:
 
 The following are examples of the shortcode:
 
-`[gc_type_writer id="tw-1" text="Short type writer text!" type="letter" milli-sec="60" bg-color="black" text-color="#dddddd" text-tag="h3" weight="bold"]`
+`[gc_type_writer id="tw-1" text="Short typewriter text!" type="letter" milli-sec="60" bg-color="black" text-color="#dddddd" text-tag="h3" weight="bold"]`
 
 or:
 
-`[gc_type_writer id="tw-2" text="Short type writer text!" type="word" milli-sec="450" bg-color="darkgray" text-color="red" text-tag="p" weight="bold"]`
+`[gc_type_writer id="tw-2" text="Short typewriter text!" type="word" milli-sec="450" bg-color="darkgray" text-color="red" text-tag="p" weight="bold"]`
 
 The arguments are as follows:
 - id:         (not require) assigns an id for the tag (**'id'** value must be unique on the page),
-- text:       (required) text for the type writer,
+- text:       (required) text for the typewriter,
 - type:       (default is letter) options of letter/word,
 - milli-sec:  (default 50 or 1/20 seconds) # of milliseconds between typing,
 - bg-color:   (system default) background color applied to the tag,
@@ -120,14 +122,14 @@ The arguments are as follows:
 ## <div name='gc_slider'>gc_slider</div>
 
 [gc_slider] returns the HTML code for an animated GC slider.
-[gc_slider] is a two part shortcode as follows [gc_slider]content[/gc_slider].  The content is imbedded and should be another list of shortcodes.  Also see the [gc_image_item] shortcode.
-This is a wrapper for another shortcodes or content.  It renders a
+[gc_slider] is a two part shortcode as follows [gc_slider]content[/gc_slider].  The content is embedded and should be another list of shortcodes.  Also see the [gc_image_item] shortcode.
+This is a wrapper for other shortcodes or content.  It renders a
 collection of items, all set to display: none (i.e. hidden).
-The JavaScript loops through allow each one to display the item.
+The JavaScript loops through each item to display the item.
 
 Note:
 
-That [gc_slider] will remove `<br />` from the output.  If you want to use a br in the imbedded content, try using a `<br/>` instead.
+That [gc_slider] will remove `<br />` from the output.  If you want to use a br in the embedded content, try using a `<br/>` instead.
 
 [gc_slider] shortcode example:
 
@@ -151,7 +153,7 @@ The arguments are as follows:
 
 Note:
 
-That [gc_slider] will remove <br /> from the output.  If you want to use a br in the imbedded content, try using a <br/> instead.
+That [gc_slider] will remove <br /> from the output.  If you want to use a br in the embedded content, try using a <br/> instead.
 
 Example:
 
@@ -168,7 +170,8 @@ The arguments are as follows:
 - bg_color:        (default none) background color applied to title div tag,
 - text_color:      (default none) font color applied to title div tag.
 
-## gc_slider and gc_image_item
+
+## <div name='gc_slider_item-gc_image_item'>gc_slider and gc_image_item example</div>
 
 Combine the [gc_slider] with the [gc_image_item] to create an image slider.
 
@@ -195,7 +198,7 @@ The animation is done by CSS @keyframes.
 
 Note:
 
-That [gc_slider_item] will remove <br /> from the output.  If you want to use a br in the imbedded content, try using a <br/> instead.
+That [gc_slider_item] will remove <br /> from the output.  If you want to use a br in the embedded content, try using a <br/> instead.
 
 Example:
 ```
@@ -243,10 +246,10 @@ or
 The arguments are as follows:
 - format:        (default is rectangle) rectangle or circle,
 - post_type:     (default to none) a custom post type,
-- category_slug: (default to none) a post category slug or comma seperated slugs, if blank the latest posts,
-- tag_slug:      (default to none) a post tag slug or comma seperated slugs, if blank then see category_slug
+- category_slug: (default to none) a post category slug or comma separated slugs, if blank the latest posts,
+- tag_slug:      (default to none) a post tag slug or comma separated slugs, if blank then see category_slug
 - posts_per_row: (default is 5) the number of posts displayed in a row,
-- showposts:     (default is 5) the number of posts to displayed.
+- showposts:     (default is 5) the number of posts to display.
 
 
 ## <div name='gc_posts_slider'>gc_posts_slider</div>
@@ -277,8 +280,8 @@ Such that:
   - fade-up
   - fade-down
 - post_type:    a custom post type (default to none),
-- category_slug: a post category slug or comma seperated slugs (default is none), if blank the latest posts
-- tag_slug:     a post tag slug or comma seperated slugs (default is none), if blank then see category_slug
+- category_slug: a post category slug or comma separated slugs (default is none), if blank the latest posts
+- tag_slug:     a post tag slug or comma separated slugs (default is none), if blank then see category_slug
 - show_posts:   the number of posts to displayed (the default is 5),
 - show_date:    include the date, option true/false (default is true),
 - show_author:  include the author, option true/false (default is true),
