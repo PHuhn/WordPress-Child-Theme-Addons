@@ -16,7 +16,7 @@ function my_theme_enqueue_styles() {
 add_action( 'wp_enqueue_scripts', 'theme_enqueue_external_styles' );
 function theme_enqueue_external_styles() {
 	wp_register_style( 'mega-menu-css', get_stylesheet_directory_uri() .
-		'/assets/mega-menu-2022.css' );
+		'/assets/css/mega-menu-2022.css' );
 	wp_enqueue_style( 'mega-menu-css' );
 }
 */
