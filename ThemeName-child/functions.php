@@ -1,6 +1,6 @@
 <?php
 /*
-** Twenty Twenty functions and definitions
+** Twenty Twenty Four functions and definitions
 */
 add_action( 'wp_enqueue_scripts', 'my_theme_enqueue_styles' );
 function my_theme_enqueue_styles() {

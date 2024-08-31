@@ -38,6 +38,23 @@ The above will render as follows:
 
 `<body class="page-template-default page page-id-667 ... winter ...">`
 
+or another usage:
+
+```<?php
+function gc_seasonal_Image() {
+	// Locate the seasonal images
+	$seasonalImages = array(
+		 "spring" => "images/spring.jpg",
+		 "summer" => "images/summer.jpg",
+		 "autumn" => "images/autumn.jpg",
+		 "winter" => "images/winter.jpg"
+	);
+	echo $seasonalImages[ gc_get_season( ) ];
+}
+?>
+
+<img src="<?php gc_seasonal_Image( ) ?>" alt="seasonal image" />
+```
 
 ## <div name='gc-fade'>gc-fade animation</div>
 
