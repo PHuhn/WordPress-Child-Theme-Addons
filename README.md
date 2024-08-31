@@ -38,9 +38,18 @@ The above will render as follows:
 
 `<body class="page-template-default page page-id-667 ... winter ...">`
 
-or another usage:
+Instead of physically changing the body tag, one can use the body_class hook as follows:
 
-```<?php
+```
+add_filter( 'body_class', function( $classes ) {
+	return $classes . ' ' . gc_get_season( );
+} );
+```
+
+or another usage of **gc_get_season** to hash what image to use:
+
+```
+<?php
 function gc_seasonal_Image() {
 	// Locate the seasonal images
 	$seasonalImages = array(
