@@ -26,7 +26,7 @@ gc_get_season is a PHP function that returns the following possible sting values
 - autumn
 - winter
 
-One use is that this function can be used to inject a season into the page's class.  For example, say in twenty-twenty theme copy header.php into child theme and change the following from:
+One use is that this function can be used to inject a season into the page's class.  For example, say in twenty-twenty (and one) theme copy header.php into child theme and change the following from:
 
 `<body <?php body_class(); ?>>`
 
@@ -50,7 +50,7 @@ or another usage of **gc_get_season** to hash what image to use:
 
 ```
 <?php
-function gc_seasonal_Image() {
+function gc_seasonal_image() {
 	// Locate the seasonal images
 	$seasonalImages = array(
 		 "spring" => "images/spring.jpg",
@@ -62,7 +62,7 @@ function gc_seasonal_Image() {
 }
 ?>
 
-<img src="<?php gc_seasonal_Image( ) ?>" alt="seasonal image" />
+<img src="<?php gc_seasonal_image( ) ?>" alt="seasonal image" />
 ```
 
 ## <div name='gc-fade'>gc-fade animation</div>

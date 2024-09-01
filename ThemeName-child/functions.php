@@ -2,11 +2,17 @@
 /*
 ** Twenty Twenty Four functions and definitions
 */
-add_action( 'wp_enqueue_scripts', 'my_theme_enqueue_styles' );
-function my_theme_enqueue_styles() {
-	wp_enqueue_style( 'parent-style', get_template_directory_uri() .
-		'/style.css' );
-}
+if ( ! function_exists( 'child_theme_enqueue_parent_styles' ) ) :
+	/**
+	** Register parent theme
+	** @return void
+	*/
+	function child_theme_enqueue_parent_styles() {
+		wp_enqueue_style( 'parent-style', get_template_directory_uri() .
+			'/style.css' );
+	}
+endif;
+add_action( 'wp_enqueue_scripts', 'child_theme_enqueue_parent_styles' );
 /*
 ** Enqueues the external CSS file
 ** Choose either mega-menu-2020.css or mega-menu-2022.css
@@ -20,7 +26,7 @@ function theme_enqueue_external_styles() {
 	wp_enqueue_style( 'mega-menu-css' );
 }
 */
-/*
+/**
 ** ===========================================================================
 ** From: https://css-tricks.com/snippets/php/change-graphics-based-on-season/
 **
